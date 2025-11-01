@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+
+# Data (Không đưa data lớn lên Git)
+data/
+*.csv
+*.json
+
+# VS Code
+.vscode/

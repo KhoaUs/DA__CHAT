@@ -1,0 +1,1 @@
+from streamlit_audiorecorder import audiorecorder
