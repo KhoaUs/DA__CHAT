@@ -31,3 +31,6 @@ build/
 # Environment secrets
 *.env
 .env.*
+
+# File test
+test_ui.py

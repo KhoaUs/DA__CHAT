@@ -114,7 +114,7 @@ with st.sidebar:
     selected_model_name = model_options[selected_model_label]
     
     st.markdown("---")
-    st.caption(f"🚀 Đang chạy: **{selected_model_label}**")
+    st.caption(f"Đang chạy: **{selected_model_label}**")
     st.caption("Ver: Latest")
 
 # --- GIAO DIỆN CHÍNH ---
