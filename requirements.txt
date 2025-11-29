@@ -1,0 +1,11 @@
+streamlit
+langchain
+langgraph
+langchain-google-genai
+langchain-community
+pandas
+plotly
+python-dotenv
+streamlit-mic-recorder
+pydantic
+SpeechRecognition  
