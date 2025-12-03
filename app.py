@@ -98,10 +98,9 @@ with st.sidebar:
     st.markdown("### 🤖 Chọn Model AI")
     
     # Dictionary map tên hiển thị -> tên kỹ thuật
-    # Lưu ý: Hiện tại 1.5 là bản mới nhất public. Nếu bạn có 2.5, hãy sửa value ở đây.
     model_options = {
-        "Gemini Flash (Standard)": "gemini-2.5-flash",      # Mặc định (Tương đương yêu cầu 2.5 flash của bạn)
-        "Gemini Flash Lite": "gemini-2.5-flash-lite",           # Bản Lite/Micro
+        "Gemini Flash (Standard)": "gemini-2.5-flash",      # Mặc định 
+        "Gemini Flash Lite": "gemini-2.5-flash-lite",           # Bản Lite
         "Gemini Pro (Advanced)": "gemini-pro-latest"      # Bản Pro mạnh nhất
     }
     
@@ -129,7 +128,7 @@ if "last_tool_output" not in st.session_state:
 if "prev_audio_bytes" not in st.session_state:
     st.session_state.prev_audio_bytes = None
 
-# Container chứa chat history (để input luôn ở dưới cùng)
+# Container chứa chat history 
 chat_container = st.container()
 
 # --- INPUT AREA (STICKY BOTTOM) ---
