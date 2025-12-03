@@ -3,7 +3,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import SystemMessage
 from langgraph.graph import StateGraph, START, END
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 from langgraph.types import Command
 from modules.database_mock import get_price_stats, get_sales_stats, get_review_stats, get_product_analysis
 
@@ -45,9 +45,9 @@ def init_agent(api_key, model_name="gemini-2.5-flash", version_name="001"):
 
         "\n3. ĐỊNH DẠNG CÂU TRẢ LỜI (OUTPUT FORMAT):"
         "\n   Không được trả lời kiểu văn xuôi tràn lan. Hãy chia thành 3 phần rõ rệt:"
-        "\n   - 📊 TÓM TẮT THỊ TRƯỜNG: 2-3 câu ngắn gọn về tình hình chung (VD: 'Thị trường iPhone 15 đang cạnh tranh gay gắt về giá, Tiki đang dẫn đầu về giá rẻ')."
-        "\n   - 💡 INSIGHT CHUYÊN SÂU (Điểm nhấn): Chỉ ra 2-3 điểm bất thường hoặc thú vị. (VD: 'Dù giá cao hơn 200k, Shop A vẫn bán chạy nhất -> Khách hàng ưu tiên uy tín hơn giá rẻ')."
-        "\n   - 🚀 KHUYẾN NGHỊ HÀNH ĐỘNG: Đưa ra lời khuyên cụ thể (VD: 'Nếu bạn là người mua: Nên mua ở Tiki để rẻ nhất. Nếu bạn là người bán: Cần cải thiện đóng gói vì từ khóa 'hộp móp' xuất hiện nhiều')."
+        "\n   - TÓM TẮT THỊ TRƯỜNG: 2-3 câu ngắn gọn về tình hình chung (VD: 'Thị trường iPhone 15 đang cạnh tranh gay gắt về giá, Tiki đang dẫn đầu về giá rẻ')."
+        "\n   - INSIGHT CHUYÊN SÂU (Điểm nhấn): Chỉ ra 2-3 điểm bất thường hoặc thú vị. (VD: 'Dù giá cao hơn 200k, Shop A vẫn bán chạy nhất -> Khách hàng ưu tiên uy tín hơn giá rẻ')."
+        "\n   - KHUYẾN NGHỊ HÀNH ĐỘNG: Đưa ra lời khuyên cụ thể cho người bán"
 
         "\n4. STYLE:"
         "\n   - Dùng giọng văn chuyên nghiệp, sắc sảo, đi thẳng vào vấn đề."
@@ -56,9 +56,9 @@ def init_agent(api_key, model_name="gemini-2.5-flash", version_name="001"):
     )
     
     # 4. Bind system prompt vào LLM
-    llm_with_system = llm.bind(system_prompt=system_prompt)
+    # llm_with_system = llm.bind(system_prompt=system_prompt)
     
     # 5. Tạo Agent với LangGraph
-    agent = create_react_agent(llm_with_system, tools)
+    agent = create_agent(model=llm, tools=tools, system_prompt=system_prompt)
     
     return agent
