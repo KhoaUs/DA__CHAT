@@ -20,8 +20,8 @@ from describe_market import (
 )
 
 
-DATA_CSV = r"data\data_fixed.csv"
-EMB_NPY = r"data\product_name_embeddings.npy"
+DATA_CSV = r"Data\data_fixed.csv"
+EMB_NPY = r"Data\product_name_embeddings.npy"
 
 
 def print_section(title: str) -> None:
