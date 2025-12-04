@@ -5,7 +5,10 @@ from langchain_core.messages import SystemMessage
 from langgraph.graph import StateGraph, START, END
 from langchain.agents import create_agent
 from langgraph.types import Command
-from modules.database_mock import get_price_stats, get_sales_stats, get_review_stats, get_product_analysis
+from modules.database_mock import (
+    get_price_stats, get_sales_stats, get_review_stats, get_product_analysis, get_brand_share_stats, get_top_sellers_stats,
+    get_top_brands_analysis, get_seller_diversity_analysis, get_price_range_analysis, get_roi_analysis, get_advanced_market_analysis
+)
 
 def init_agent(api_key, model_name="gemini-2.5-flash", version_name="001"):
     if model_name=="gemini-pro-latest":
@@ -20,7 +23,9 @@ def init_agent(api_key, model_name="gemini-2.5-flash", version_name="001"):
     )
     
     # 2. Định nghĩa Tools
-    tools = [get_price_stats, get_sales_stats, get_review_stats, get_product_analysis]
+    tools = [get_price_stats, get_sales_stats, get_review_stats, get_product_analysis, 
+            get_top_brands_analysis, get_seller_diversity_analysis, get_price_range_analysis, 
+            get_roi_analysis, get_advanced_market_analysis, get_brand_share_stats, get_top_sellers_stats]
     
     # 3. Tạo System Prompt
     system_prompt = (

@@ -219,5 +219,13 @@ if st.session_state.last_tool_output:
                 DashboardRenderer.render_review_dashboard(data_content)
             elif tool_type == "get_product_analysis":
                 DashboardRenderer.render_combined_dashboard(data_content)
+            elif tool_type == "get_advanced_market_analysis":
+                DashboardRenderer.render_advanced_dashboard(data_content)
+            elif tool_type == "get_top_brands_analysis":
+                DashboardRenderer.render_top_brands(json.loads(data_content).get('data'))
+            elif tool_type == "get_brand_share_stats":
+                DashboardRenderer.render_brand_share_dashboard(data_content)
+            elif tool_type == "get_top_sellers_stats":
+                DashboardRenderer.render_top_sellers_dashboard(data_content)
         except Exception as e:
             st.warning("Dữ liệu không đủ để vẽ biểu đồ.")

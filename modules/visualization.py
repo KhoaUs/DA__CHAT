@@ -147,3 +147,254 @@ class DashboardRenderer:
             DashboardRenderer.render_sales_dashboard(data['sales_stats'])
         with tab3:
             DashboardRenderer.render_review_dashboard(data['review_stats'])
+
+    # --- 1. RENDER TOP BRANDS ---
+    @staticmethod
+    def render_top_brands(data_list):
+        if not data_list: return
+        df = pd.DataFrame(data_list)
+        
+        st.markdown("### 🏆 Top Thương Hiệu (Theo Doanh Thu)")
+        
+        # Vẽ biểu đồ cột ngang
+        fig = px.bar(df, x='value', y='brand', color='platform', orientation='h',
+                     title="Thị phần thương hiệu theo sàn",
+                     labels={'value': 'Doanh thu ước tính', 'brand': 'Thương hiệu'},
+                     text_auto='.2s')
+        
+        fig.update_layout(yaxis={'categoryorder':'total ascending'}) # Sắp xếp tăng dần
+        st.plotly_chart(fig, use_container_width=True)
+
+    # --- 2. RENDER SELLER DIVERSITY ---
+    @staticmethod
+    def render_seller_diversity(data_list):
+        if not data_list: return
+        df = pd.DataFrame(data_list)
+        
+        st.markdown("### 🏪 Phân Tích Đa Dạng Seller")
+        st.caption("Chỉ số Diversity cao thể hiện Shop bán nhiều loại mặt hàng khác nhau.")
+        
+        # Scatter Plot: Trục X = Product Count, Trục Y = Diversity Index
+        fig = px.scatter(df, x='product_count', y='diversity_index',
+                         size='unique_categories', color='platform',
+                         hover_name='seller_name',
+                         title="Quy mô Shop vs Độ đa dạng danh mục",
+                         labels={'product_count': 'Tổng sản phẩm', 'diversity_index': 'Chỉ số đa dạng'})
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Table Top Seller
+        with st.expander("Xem chi tiết danh sách Seller"):
+            st.dataframe(df[['seller_name', 'platform', 'diversity_index', 'unique_categories']], use_container_width=True)
+
+    # --- 3. RENDER PRICE RANGE (BOX PLOT) ---
+    @staticmethod
+    def render_price_range(data_list):
+        if not data_list: return
+        # Vì dữ liệu đã tính sẵn Q1, Median... nên dùng graph_objects.Box
+        
+        st.markdown("### 🕯️ Cấu Trúc Giá (Price Range)")
+        
+        fig = go.Figure()
+        
+        # Group by Platform + Category để vẽ
+        # Ở đây demo vẽ theo từng dòng dữ liệu
+        for item in data_list:
+            label = f"{item['platform']} - {item['categories']}"
+            fig.add_trace(go.Box(
+                name=label,
+                q1=[item['q_low']], 
+                median=[item['median_price']],
+                q3=[item['q_high']], 
+                lowerfence=[item['min_price']],
+                upperfence=[item['max_price']],
+                marker_color='#1f77b4' if item['platform'] == 'Shopee' else '#ff7f0e'
+            ))
+            
+        fig.update_layout(title="Phân bố dải giá theo Sàn & Danh mục", showlegend=False)
+        st.plotly_chart(fig, use_container_width=True)
+
+    # --- 4. RENDER ROI ---
+    @staticmethod
+    def render_roi_stats(data_list):
+        if not data_list: return
+        df = pd.DataFrame(data_list)
+        
+        st.markdown("### 💰 Hiệu Suất ROI (Sold / Price)")
+        st.caption("Chỉ số thể hiện: Với mỗi đồng giá bán ra, thu lại bao nhiêu lượt mua.")
+        
+        # Vẽ biểu đồ Group Bar để so sánh Mean vs Median
+        fig = go.Figure()
+        fig.add_trace(go.Bar(name='ROI Trung Bình', x=df['group'], y=df['roi_mean']))
+        fig.add_trace(go.Bar(name='ROI Trung Vị', x=df['group'], y=df['roi_median']))
+        
+        fig.update_layout(barmode='group', title="So sánh hiệu quả ROI theo nhóm")
+        st.plotly_chart(fig, use_container_width=True)
+
+    # --- 5. RENDER ADVANCED DASHBOARD (TỔNG HỢP) ---
+    @staticmethod
+    def render_advanced_dashboard(data_input):
+        data = DashboardRenderer._parse_data(data_input)
+        
+        st.header(f"🚀 Báo Cáo Chuyên Sâu: {data.get('keyword', 'Thị trường')}")
+        
+        tab1, tab2, tab3, tab4 = st.tabs(["🏆 Thương Hiệu", "🏪 Đối Thủ", "🕯️ Phân Khúc Giá", "💰 Hiệu Quả (ROI)"])
+        
+        with tab1:
+            DashboardRenderer.render_top_brands(data.get('top_brands'))
+        with tab2:
+            DashboardRenderer.render_seller_diversity(data.get('seller_diversity'))
+        with tab3:
+            DashboardRenderer.render_price_range(data.get('price_range'))
+        with tab4:
+            DashboardRenderer.render_roi_stats(data.get('roi_stats'))
+
+
+     # --- 5. TOP SELLERS VISUALIZATION ---
+    @staticmethod
+    def render_top_sellers_dashboard(data_input):
+        """
+        Visualize the output of top_sellers(): top sellers by value,
+        platform share, and a sortable table. Expected schema:
+        {
+          "data": [ {"rank": int, "seller_name": str, "platform": str, "value": number}, ... ],
+          "meta": {"filters": {"by": "sold"|"product_count"}, ...}
+        }
+        """
+        raw = DashboardRenderer._parse_data(data_input)
+        rows = raw.get('data', raw)
+        if not rows:
+            st.info("Không có dữ liệu người bán để hiển thị.")
+            return
+
+        df = pd.DataFrame(rows)
+        required_cols = {"rank", "seller_name", "platform", "value"}
+        if not required_cols.issubset(df.columns):
+            st.warning("Dữ liệu không đúng định dạng mong đợi cho top_sellers().")
+            st.write(df.head())
+            return
+
+        by = raw.get('meta', {}).get('filters', {}).get('by', 'product_count')
+        metric_label = "Đã bán" if by == "sold" else "Số sản phẩm"
+
+        st.markdown("### 🏪 Top Người Bán (Sellers)")
+
+        # Overall
+        df_sorted = df.sort_values(["value", "rank"], ascending=[False, True]).reset_index(drop=True)
+        top_name = df_sorted.iloc[0]["seller_name"] if len(df_sorted) else "N/A"
+        top_val = df_sorted.iloc[0]["value"] if len(df_sorted) else 0
+        cols = st.columns(4)
+        cols[0].metric("Top 1 Seller", str(top_name))
+        cols[1].metric(metric_label, f"{int(top_val):,}")
+        cols[2].metric("Số seller", f"{df['seller_name'].nunique():,}")
+        cols[3].metric("Số sàn", f"{df['platform'].nunique():,}")
+
+        # Charts
+        c1, c2 = st.columns(2)
+        with c1:
+            # Horizontal bar of sellers
+            fig_bar = px.bar(
+                df_sorted.head(20),
+                x="value",
+                y="seller_name",
+                orientation='h',
+                color="platform",
+                title=f"Top Sellers theo {metric_label}",
+                labels={"value": metric_label, "seller_name": "Seller"},
+                hover_data=["rank", "platform"]
+            )
+            fig_bar.update_layout(yaxis={'categoryorder':'total ascending'})
+            st.plotly_chart(fig_bar, use_container_width=True)
+
+        with c2:
+            # Platform share among the top sellers
+            plat_share = df.groupby('platform', as_index=False)['value'].sum()
+            fig_pie = px.pie(
+                plat_share,
+                names='platform',
+                values='value',
+                title=f"Tỷ trọng theo sàn ({metric_label})",
+                hole=0.35
+            )
+            fig_pie.update_traces(textposition='inside', textinfo='percent+label')
+            st.plotly_chart(fig_pie, use_container_width=True)
+
+
+
+    # --- 6. BRAND SHARE CHART VISUALIZATION ---
+    @staticmethod
+    def render_brand_share_dashboard(data_input):
+        """
+        Visualize the output of brand_share_chart(): brand market share across platforms.
+        Expected schema:
+        {
+          "data": [ {"platform": str, "brand": str, "value": number, "share_pct": float}, ... ],
+          "meta": {"filters": {"metric": "sku"|"revenue_est", "normalize": bool}, ...}
+        }
+        """
+        raw = DashboardRenderer._parse_data(data_input)
+        rows = raw.get('data', raw)
+        if not rows:
+            st.info("Không có dữ liệu thương hiệu để hiển thị.")
+            return
+
+        df = pd.DataFrame(rows)
+        required_cols = {"platform", "brand", "value"}
+        if not required_cols.issubset(df.columns):
+            st.warning("Dữ liệu không đúng định dạng mong đợi cho brand_share_chart().")
+            st.write(df.head())
+            return
+
+        metric = raw.get('meta', {}).get('filters', {}).get('metric', 'sku')
+        normalized = raw.get('meta', {}).get('filters', {}).get('normalize', True)
+        metric_label = "Doanh Thu" if metric == "revenue_est" else "Số SKU"
+
+        st.markdown("### 📊 Thị Phần Thương Hiệu")
+
+        # Overall
+        total_brands = df['brand'].nunique()
+        total_platforms = df['platform'].nunique()
+        top_brand = df.groupby('brand')['value'].sum().idxmax() if len(df) else "N/A"
+        total_value = df['value'].sum()
+        
+        cols = st.columns(4)
+        cols[0].metric("Tổng Thương Hiệu", f"{total_brands:,}")
+        cols[1].metric("Số Sàn", f"{total_platforms:,}")
+        cols[2].metric("Top Brand", str(top_brand))
+        cols[3].metric(f"Tổng {metric_label}", f"{int(total_value):,}")
+
+        # Charts
+        c1, c2 = st.columns(2)
+        
+        with c1:
+            # Stacked bar chart by platform
+            fig_bar = px.bar(
+                df,
+                x="platform",
+                y="share_pct" if normalized and 'share_pct' in df.columns else "value",
+                color="brand",
+                title=f"Thị Phần Thương Hiệu theo Sàn ({metric_label})",
+                labels={
+                    "value": metric_label,
+                    "share_pct": "Tỷ lệ (%)",
+                    "platform": "Sàn",
+                    "brand": "Thương Hiệu"
+                },
+                barmode="stack"
+            )
+            if normalized and 'share_pct' in df.columns:
+                fig_bar.update_yaxes(title="Tỷ lệ (%)")
+            st.plotly_chart(fig_bar, use_container_width=True)
+
+        with c2:
+            # Overall brand share pie chart
+            brand_totals = df.groupby('brand', as_index=False)['value'].sum()
+            fig_pie = px.pie(
+                brand_totals,
+                names='brand',
+                values='value',
+                title=f"Tổng Thị Phần Thương Hiệu ({metric_label})",
+                hole=0.4
+            )
+            fig_pie.update_traces(textposition='inside', textinfo='percent+label')
+            st.plotly_chart(fig_pie, use_container_width=True)
