@@ -25,6 +25,9 @@ _COLUMN_MAP = {
 
 _DEFAULT_PLATFORMS = ["Lazada", "Shopee", "Tiki", "TikTokShop", "Sendo"]
 
+# Số lượng row tối đa dùng để RESOLVE (category/brand) – cố định để tránh nhảy lung tung giữa các fe_*
+_RESOLVE_MAX_ROWS = 200
+
 _EMB_MODEL = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 _PRODUCT_EMB: Optional[np.ndarray] = None
 
@@ -465,22 +468,27 @@ def resolve_product(
     hint: Optional[Dict[str, Any]] = None,
     max_rows: int = 200,
 ) -> Dict[str, Any]:
+
     query = A or ""
-    q_norm = query.lower()
     tokens = _tokenize(query)
 
-    if hint and "platforms" in hint:
-        platforms = hint["platforms"]
-    else:
-        platforms = _DEFAULT_PLATFORMS
+    hint = dict(hint or {})
+    platforms = hint.get("platforms") or _DEFAULT_PLATFORMS
+    min_reviews = int(hint.get("min_reviews", 0))
 
-    min_reviews = 0
-    if hint and "min_reviews" in hint:
-        min_reviews = hint["min_reviews"]
+    # ❗ Không tự đoán brand hoặc category
+    hint_brand = hint.get("brand")
+    hint_category = hint.get("category")
 
-    hint_brand = hint.get("brand") if hint else None
-    hint_category = hint.get("category") if hint else None
+    # ❗ CHỈ DÙNG HINT
+    detected_category = hint_category if hint_category in catalog_categories else None
+    brand_guess = hint_brand if hint_brand in brand_list else None
 
+    # ❗ Tính confidence rất nhỏ vì ta không đoán
+    confidence = 0.1
+    notes_parts = []
+
+    # Hybrid search chỉ để xem có hit hay không (không dùng để đoán brand/category)
     hits = hybrid_search(
         df=df,
         query=A,
@@ -491,59 +499,26 @@ def resolve_product(
         max_rows=max_rows,
     )
 
-    detected_category = None
-    brand_guess = None
-    notes_parts: List[str] = []
-    confidence = 0.3
-
     if not hits.empty:
         notes_parts.append("hybrid_search_hits")
-
-        cat_col = _safe_column(hits, "category")
-        cat_counts = hits[cat_col].dropna().astype(str).value_counts()
-        if not cat_counts.empty:
-            top_cat = str(cat_counts.idxmax())
-            if top_cat in catalog_categories:
-                detected_category = top_cat
-                confidence += 0.3
-                notes_parts.append("category_from_hits=" + top_cat)
-
-        brand_col = _safe_column(hits, "brand")
-        brand_counts = hits[brand_col].dropna().astype(str).value_counts()
-        if not brand_counts.empty:
-            for b, cnt in brand_counts.items():
-                if b in brand_list:
-                    brand_guess = b
-                    confidence += 0.2
-                    notes_parts.append("brand_from_hits=" + b)
-                    break
-
-    if hint_category and detected_category is None and hint_category in catalog_categories:
-        detected_category = hint_category
-        confidence += 0.2
-        notes_parts.append("fallback_hint_category=" + hint_category)
-
-    if hint_brand and brand_guess is None and hint_brand in brand_list:
-        brand_guess = hint_brand
         confidence += 0.1
-        notes_parts.append("fallback_hint_brand=" + hint_brand)
 
-    if brand_guess is None:
-        for kw, mapped_brand in _BRAND_KEYWORDS.items():
-            if kw in q_norm:
-                brand_guess = mapped_brand
-                confidence += 0.1
-                notes_parts.append("brand_from_keyword=" + mapped_brand)
-                break
+    # Không đoán category từ hits
+    # Không đoán brand từ hits
+    # Không dò keyword
 
-    confidence = max(0.0, min(1.0, confidence))
+    if hint_category:
+        notes_parts.append(f"category_from_hint={hint_category}")
+
+    if hint_brand:
+        notes_parts.append(f"brand_from_hint={hint_brand}")
 
     if not notes_parts:
         notes_parts.append("no_hits")
 
-    notes = "hybrid_search-driven; " + "; ".join(notes_parts)
+    notes = "resolve_product; " + "; ".join(notes_parts)
 
-    res = ProductResolution(
+    result = ProductResolution(
         detected_category=detected_category,
         brand_guess=brand_guess,
         query_tokens=tokens,
@@ -552,7 +527,8 @@ def resolve_product(
         notes=notes,
         product_query=A,
     )
-    return res.to_output()
+    return result.to_output()
+
 
 
 def _search_df_core(
@@ -569,22 +545,27 @@ def _search_df_core(
     if "min_reviews" not in hint:
         hint["min_reviews"] = min_reviews
 
+    # ❗ Quan trọng: luôn dùng _RESOLVE_MAX_ROWS để resolve category/brand
     resolution = resolve_product(
         A=A,
         catalog_categories=catalog_categories,
         brand_list=brand_list,
         df=df,
         hint=hint,
-        max_rows=max_rows,
+        max_rows=_RESOLVE_MAX_ROWS,
     )
 
-    detected_category = resolution["data"]["detected_category"]
-    brand_guess = resolution["data"]["brand_guess"]
+    # ❗ Dùng đúng HINT, không dùng predicted brand/category
+    detected_category = hint.get("category")
+    brand_guess = hint.get("brand")
+
     platforms = resolution["data"]["platforms"] or _DEFAULT_PLATFORMS
 
-    if hint.get("platforms"):
+    if "platforms" in hint and hint["platforms"]:
         platforms = hint["platforms"]
-    if hint.get("brand"):
+    if "category" in hint and hint["category"]:
+        detected_category = hint["category"]
+    if "brand" in hint and hint["brand"]:
         brand_guess = hint["brand"]
 
     df_hits = hybrid_search(
