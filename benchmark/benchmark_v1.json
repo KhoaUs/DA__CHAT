@@ -1,616 +1,778 @@
 [
-    {
-      "id": "ex_0001_search_simple",
-      "user_query": "Liệt kê giúp tôi các mẫu iPhone SE đang bán trên Lazada có ít nhất 50 lượt đánh giá.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "Basic search_products with single platform, min_reviews."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "search_products",
-          "tool_name": "search_products_hybrid",
-          "tool_arguments": {
-            "A": "iphone se",
-            "platforms": ["Lazada"],
-            "min_reviews": 50,
-            "max_rows": 50,
-            "enforce_phrase": true
-          },
-          "slots": {
-            "A": "iphone se",
-            "platforms": ["Lazada"],
-            "min_reviews": 50
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_name_accuracy",
-          "tool_call_exact_match",
-          "slot_f1_platforms",
-          "slot_f1_product_A",
-          "slot_accuracy_min_reviews",
-          "retrieval_precision_at_k",
-          "retrieval_recall_at_k"
-        ]
-      }
+  {
+    "id": "rating_distribution_multi_brand",
+    "user_query": "Phân bố rating của laptop gaming các hãng Asus, MSI, Dell trên Shopee.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "rating_distribution with multiple brand filtering - FORWARD LOOKING."
     },
-    {
-      "id": "ex_0002_search_all_platforms",
-      "user_query": "Tìm cho tôi các mẫu tai nghe bluetooth tầm trung khoảng 500k trên tất cả các sàn.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "search_products with all default platforms, no explicit min_reviews."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "search_products",
-          "tool_name": "search_products_hybrid",
-          "tool_arguments": {
-            "A": "tai nghe bluetooth tầm trung 500k",
-            "platforms": null,
-            "min_reviews": 0,
-            "max_rows": 50,
-            "enforce_phrase": true
-          },
-          "slots": {
-            "A": "tai nghe bluetooth tầm trung 500k",
-            "platforms": null,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_name_accuracy",
-          "slot_f1_product_A",
-          "retrieval_precision_at_k"
-        ]
-      }
-    },
-    {
-      "id": "ex_0003_price_summary_two_platforms",
-      "user_query": "Cho tôi xem so sánh giá iPhone 15 Pro 256GB giữa Shopee và Lazada, chỉ tính sản phẩm có từ 100 đánh giá trở lên.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "price_summary with explicit platforms and min_reviews, by_platform true."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "price_summary",
-          "tool_name": "fe_describe_price",
-          "tool_arguments": {
-            "A": "iphone 15 pro 256gb",
-            "platforms": ["Shopee", "Lazada"],
-            "min_reviews": 100,
-            "by_platform": true
-          },
-          "slots": {
-            "A": "iphone 15 pro 256gb",
-            "platforms": ["Shopee", "Lazada"],
-            "min_reviews": 100,
-            "by_platform": true
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_call_exact_match",
-          "slot_f1_platforms",
-          "slot_accuracy_min_reviews",
-          "agg_mape_median_price",
-          "agg_mape_mean_price"
-        ]
-      }
-    },
-    {
-      "id": "ex_0004_price_summary_all_platforms",
-      "user_query": "Tóm tắt giúp tôi khoảng giá laptop gaming dưới 30 triệu trên các sàn, không cần tách theo từng sàn.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "price_summary, no platforms given, by_platform=false."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "price_summary",
-          "tool_name": "fe_describe_price",
-          "tool_arguments": {
-            "A": "laptop gaming dưới 30 triệu",
-            "platforms": null,
-            "min_reviews": 0,
-            "by_platform": false
-          },
-          "slots": {
-            "A": "laptop gaming dưới 30 triệu",
-            "platforms": null,
-            "min_reviews": 0,
-            "by_platform": false
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_call_exact_match",
-          "slot_f1_product_A",
-          "agg_mape_median_price"
-        ]
-      }
-    },
-    {
-      "id": "ex_0005_rating_distribution_by_brand",
-      "user_query": "Phân tích giúp tôi phân bố rating của tai nghe AirPods Pro trên Shopee, tách theo từng brand nếu có.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "rating_distribution with group_by_brand=true."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "rating_distribution",
-          "tool_name": "fe_rating_distribution",
-          "tool_arguments": {
-            "A": "airpods pro",
-            "platforms": ["Shopee"],
-            "bins": 20,
-            "group_by_brand": true,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "airpods pro",
-            "platforms": ["Shopee"],
-            "bins": 20,
-            "group_by_brand": true,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_call_exact_match",
-          "slot_f1_platforms"
-        ]
-      }
-    },
-    {
-      "id": "ex_0006_rating_distribution_overall",
-      "user_query": "Cho tôi xem phân bố điểm đánh giá của tivi Samsung 55 inch trên tất cả các sàn, không cần tách theo brand.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "rating_distribution with group_by_brand=false."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "rating_distribution",
-          "tool_name": "fe_rating_distribution",
-          "tool_arguments": {
-            "A": "tivi samsung 55 inch",
-            "platforms": null,
-            "bins": 20,
-            "group_by_brand": false,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "tivi samsung 55 inch",
-            "platforms": null,
-            "bins": 20,
-            "group_by_brand": false,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "slot_f1_product_A"
-        ]
-      }
-    },
-    {
-      "id": "ex_0007_sold_distribution_platforms",
-      "user_query": "Phân bố số lượng bán của nồi chiên không dầu trên Shopee, Lazada và Tiki như thế nào?",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "sold_distribution with explicit multiple platforms."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "sold_distribution",
-          "tool_name": "fe_sold_distribution",
-          "tool_arguments": {
-            "A": "nồi chiên không dầu",
-            "platforms": ["Shopee", "Lazada", "Tiki"],
-            "bins": [0, 10, 50, 100, 500, 1000, 5000, 10000],
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "nồi chiên không dầu",
-            "platforms": ["Shopee", "Lazada", "Tiki"],
-            "bins": [0, 10, 50, 100, 500, 1000, 5000, 10000],
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "slot_f1_platforms"
-        ]
-      }
-    },
-    {
-      "id": "ex_0008_category_split_default",
-      "user_query": "Các mẫu laptop văn phòng trên Shopee đang rơi vào những danh mục con nào nhiều nhất?",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "category_split with sublevel_field=categories, top_k default."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "category_split",
-          "tool_name": "fe_category_count_plot",
-          "tool_arguments": {
-            "A": "laptop văn phòng",
-            "platforms": ["Shopee"],
-            "sublevel_field": "categories",
-            "top_k": null,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "laptop văn phòng",
-            "platforms": ["Shopee"],
-            "sublevel_field": "categories",
-            "top_k": null,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_call_exact_match"
-        ]
-      }
-    },
-    {
-      "id": "ex_0009_brand_share_revenue",
-      "user_query": "Thị phần các hãng điện thoại thông minh (smartphone) theo doanh thu ước tính trên các sàn lớn hiện nay như thế nào?",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "brand_share with metric=revenue_est, normalize=true."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "brand_share",
-          "tool_name": "fe_brand_share_chart",
-            "tool_arguments": {
-            "A": "điện thoại thông minh",
-            "platforms": null,
-            "metric": "revenue_est",
-            "normalize": true,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "điện thoại thông minh",
-            "platforms": null,
-            "metric": "revenue_est",
-            "normalize": true,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "slot_f1_product_A"
-        ]
-      }
-    },
-    {
-      "id": "ex_0010_top_sellers_by_sold",
-      "user_query": "Top 10 seller bán MacBook trên Shopee theo số lượng bán là những ai?",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "top_sellers with by='sold' and top_k=10."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "top_sellers",
-          "tool_name": "fe_top_sellers",
-          "tool_arguments": {
-            "A": "macbook",
-            "platforms": ["Shopee"],
-            "by": "sold",
-            "top_k": 10,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "macbook",
-            "platforms": ["Shopee"],
-            "by": "sold",
-            "top_k": 10,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_call_exact_match"
-        ]
-      }
-    },
-    {
-      "id": "ex_0011_top_brands_tv",
-      "user_query": "Cho tôi xem top 5 thương hiệu tivi theo doanh thu ước tính trên tất cả các sàn.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "top_brands with by='revenue_est', top_k=5."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "top_brands",
-          "tool_name": "fe_top_brands",
-          "tool_arguments": {
-            "A": "tivi",
-            "platforms": null,
-            "by": "revenue_est",
-            "top_k": 5,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "tivi",
-            "platforms": null,
-            "by": "revenue_est",
-            "top_k": 5,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_name_accuracy"
-        ]
-      }
-    },
-    {
-      "id": "ex_0012_seller_diversity_tiki",
-      "user_query": "Trên Tiki, những seller nào đang bán đa dạng nhiều ngành hàng thiết bị điện tử nhất?",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "seller_diversity with single platform."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "seller_diversity",
-          "tool_name": "fe_seller_diversity_index",
-          "tool_arguments": {
-            "A": "thiết bị điện tử",
-            "platforms": ["Tiki"],
-            "min_products": 5,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "thiết bị điện tử",
-            "platforms": ["Tiki"],
-            "min_products": 5,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "slot_f1_platforms"
-        ]
-      }
-    },
-    {
-      "id": "ex_0013_price_range_by_category_brand",
-      "user_query": "Khoảng giá của tivi Samsung theo từng danh mục con trên Shopee và Lazada như thế nào? Chỉ lấy riêng brand Samsung.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "price_range_by_category with brand filter and multiple platforms."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "price_range_by_category",
-          "tool_name": "fe_price_range_by_category",
-          "tool_arguments": {
-            "A": "tivi samsung",
-            "platforms": ["Shopee", "Lazada"],
-            "brand": "Samsung",
-            "quantiles": [0.1, 0.9],
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "tivi samsung",
-            "platforms": ["Shopee", "Lazada"],
-            "brand": "Samsung",
-            "quantiles": [0.1, 0.9],
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "slot_f1_platforms",
-          "slot_accuracy_brand"
-        ]
-      }
-    },
-    {
-      "id": "ex_0014_roi_table_platform",
-      "user_query": "So sánh ROI giữa các sàn cho iPad nói chung, dùng số lượng bán chia cho giá.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "roi_table grouped by platform."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "roi_table",
-          "tool_name": "fe_roi_table_for_A",
-          "tool_arguments": {
-            "A": "ipad",
-            "platforms": null,
-            "group_by": "platform",
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "ipad",
-            "platforms": null,
-            "group_by": "platform",
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "intent_accuracy",
-          "tool_call_exact_match"
-        ]
-      }
-    },
-    {
-      "id": "ex_0015_multi_price_and_rating",
-      "user_query": "Phân tích giúp tôi giá và phân bố rating của iPhone 14 trên Shopee. Tôi muốn biết vừa khoảng giá vừa chất lượng đánh giá.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "Multi-intent: price_summary + rating_distribution on same query."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "price_summary",
-          "tool_name": "fe_describe_price",
-          "tool_arguments": {
-            "A": "iphone 14",
-            "platforms": ["Shopee"],
-            "min_reviews": 0,
-            "by_platform": true
-          },
-          "slots": {
-            "A": "iphone 14",
-            "platforms": ["Shopee"],
-            "min_reviews": 0,
-            "by_platform": true
+    "gold_calls": [
+      {
+        "intent_id": "rating_distribution",
+        "tool_name": "rating_distribution",
+        "tool_arguments": {
+          "A": "laptop gaming",
+          "platforms": ["Shopee"],
+          "bins": 20,
+          "group_by_brand": true,
+          "min_reviews": 0,
+          "use_brand_lock": false,
+          "hint": {
+            "brands": ["Asus", "MSI", "Dell"]
           }
         },
-        {
-          "intent_id": "rating_distribution",
-          "tool_name": "fe_rating_distribution",
-          "tool_arguments": {
-            "A": "iphone 14",
-            "platforms": ["Shopee"],
-            "bins": 20,
-            "group_by_brand": true,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "iphone 14",
-            "platforms": ["Shopee"],
-            "bins": 20,
-            "group_by_brand": true,
-            "min_reviews": 0
-          }
+        "slots": {
+          "A": "laptop gaming",
+          "platforms": ["Shopee"],
+          "bins": 20,
+          "group_by_brand": true,
+          "min_reviews": 0,
+          "brands": ["Asus", "MSI", "Dell"]
         }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "multi_intent_detection",
-          "tool_sequence_accuracy",
-          "slot_f1_platforms",
-          "slot_f1_product_A"
-        ]
       }
-    },
-    {
-      "id": "ex_0016_multi_search_and_top_sellers",
-      "user_query": "Trước hết hãy liệt kê các mẫu robot hút bụi đang hot trên tất cả các sàn, sau đó cho tôi top seller đang bán nhóm sản phẩm này.",
-      "language": "vi",
-      "context": {
-        "intent_taxonomy_version": "v1.0",
-        "notes": "Multi-intent: search_products + top_sellers."
-      },
-      "gold_calls": [
-        {
-          "intent_id": "search_products",
-          "tool_name": "search_products_hybrid",
-          "tool_arguments": {
-            "A": "robot hút bụi",
-            "platforms": null,
-            "min_reviews": 0,
-            "max_rows": 50,
-            "enforce_phrase": true
-          },
-          "slots": {
-            "A": "robot hút bụi",
-            "platforms": null,
-            "min_reviews": 0
-          }
-        },
-        {
-          "intent_id": "top_sellers",
-          "tool_name": "fe_top_sellers",
-          "tool_arguments": {
-            "A": "robot hút bụi",
-            "platforms": null,
-            "by": "sold",
-            "top_k": 20,
-            "min_reviews": 0
-          },
-          "slots": {
-            "A": "robot hút bụi",
-            "platforms": null,
-            "by": "sold",
-            "top_k": 20,
-            "min_reviews": 0
-          }
-        }
-      ],
-      "gold_tool_outputs": [],
-      "eval_config": {
-        "metrics": [
-          "multi_intent_detection",
-          "tool_sequence_accuracy",
-          "slot_f1_product_A"
-        ]
-      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_platforms",
+        "slot_f1_product_A",
+        "slot_accuracy_brands"
+      ]
     }
-  ]
-  
+  },
+  {
+    "id": "sold_distribution_custom_bins",
+    "user_query": "Phân bố số lượng bán của camera theo các mức: dưới 50, 50-200, 200-1000, trên 1000.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "sold_distribution with custom bin ranges."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "sold_distribution",
+        "tool_name": "sold_distribution",
+        "tool_arguments": {
+          "A": "camera",
+          "platforms": null,
+          "bins": [0, 50, 200, 1000, 10000],
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "camera",
+          "platforms": null,
+          "bins": [0, 50, 200, 1000, 10000],
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": ["intent_accuracy", "slot_f1_product_A", "slot_accuracy_bins"]
+    }
+  },
+  {
+    "id": "category_split_with_limit",
+    "user_query": "Top 5 danh mục con của thiết bị điện tử trên Tiki là gì?",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "category_split with explicit top_k limit."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "category_split",
+        "tool_name": "category_count_plot",
+        "tool_arguments": {
+          "A": "thiết bị điện tử",
+          "platforms": ["Tiki"],
+          "sublevel_field": "categories",
+          "top_k": 5,
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "thiết bị điện tử",
+          "platforms": ["Tiki"],
+          "sublevel_field": "categories",
+          "top_k": 5,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "tool_call_exact_match",
+        "slot_accuracy_top_k"
+      ]
+    }
+  },
+  {
+    "id": "brand_share_by_revenue",
+    "user_query": "Thị phần các hãng máy ảnh theo doanh thu ước tính trên Lazada như thế nào?",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "brand_share with revenue_est metric on single platform."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "brand_share",
+        "tool_name": "brand_share_chart",
+        "tool_arguments": {
+          "A": "máy ảnh",
+          "platforms": ["Lazada"],
+          "metric": "revenue_est",
+          "normalize": true,
+          "min_reviews": 0,
+          "use_brand_lock": false
+        },
+        "slots": {
+          "A": "máy ảnh",
+          "platforms": ["Lazada"],
+          "metric": "revenue_est",
+          "normalize": true,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_platforms",
+        "slot_accuracy_metric"
+      ]
+    }
+  },
+  {
+    "id": "brand_share_by_sku",
+    "user_query": "Thị phần các hãng điện thoại theo số lượng sản phẩm (SKU) trên tất cả các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "brand_share with sku metric across all platforms."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "brand_share",
+        "tool_name": "brand_share_chart",
+        "tool_arguments": {
+          "A": "điện thoại",
+          "platforms": null,
+          "metric": "sku",
+          "normalize": true,
+          "min_reviews": 0,
+          "use_brand_lock": false
+        },
+        "slots": {
+          "A": "điện thoại",
+          "platforms": null,
+          "metric": "sku",
+          "normalize": true,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": ["intent_accuracy", "slot_accuracy_metric"]
+    }
+  },
+  {
+    "id": "top_sellers_by_sold_count",
+    "user_query": "Top 8 seller bán điện thoại Samsung nhiều nhất trên Tiki theo số lượng bán.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "top_sellers with brand filter and sold metric."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "top_sellers",
+        "tool_name": "top_sellers",
+        "tool_arguments": {
+          "A": "điện thoại samsung",
+          "platforms": ["Tiki"],
+          "by": "sold",
+          "top_k": 8,
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "điện thoại samsung",
+          "platforms": ["Tiki"],
+          "by": "sold",
+          "top_k": 8,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "tool_call_exact_match",
+        "slot_accuracy_top_k"
+      ]
+    }
+  },
+  {
+    "id": "top_brands_by_sold",
+    "user_query": "Top 5 thương hiệu tai nghe bán chạy nhất trên tất cả các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "top_brands with sold metric across all platforms."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "top_brands",
+        "tool_name": "top_brands",
+        "tool_arguments": {
+          "A": "tai nghe",
+          "platforms": null,
+          "by": "sold",
+          "top_k": 5,
+          "min_reviews": 0,
+          "use_brand_lock": false
+        },
+        "slots": {
+          "A": "tai nghe",
+          "platforms": null,
+          "by": "sold",
+          "top_k": 5,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": ["intent_accuracy", "slot_f1_product_A"]
+    }
+  },
+  {
+    "id": "seller_diversity_threshold",
+    "user_query": "Những seller nào bán ít nhất 10 sản phẩm laptop và đa dạng nhất trên TikTok Shop?",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "seller_diversity with min_products threshold."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "seller_diversity",
+        "tool_name": "seller_diversity_index",
+        "tool_arguments": {
+          "A": "laptop",
+          "platforms": ["TikTok Shop"],
+          "min_products": 10,
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "laptop",
+          "platforms": ["TikTok Shop"],
+          "min_products": 10,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_platforms",
+        "slot_accuracy_min_products"
+      ]
+    }
+  },
+  {
+    "id": "price_range_specific_brand",
+    "user_query": "Khoảng giá của máy ảnh Canon theo từng danh mục trên Shopee và Lazada.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "price_range_by_category with specific brand and multiple platforms."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "price_range_by_category",
+        "tool_name": "price_range_by_category",
+        "tool_arguments": {
+          "A": "máy ảnh",
+          "platforms": ["Shopee", "Lazada"],
+          "brand": "Canon",
+          "quantiles": [0.1, 0.9],
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "máy ảnh",
+          "platforms": ["Shopee", "Lazada"],
+          "brand": "Canon",
+          "quantiles": [0.1, 0.9],
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": ["intent_accuracy", "slot_f1_platforms", "slot_accuracy_brand"]
+    }
+  },
+  {
+    "id": "roi_by_seller",
+    "user_query": "So sánh ROI giữa các seller bán iPhone trên Shopee.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "roi_table grouped by seller with specific product."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "roi_table",
+        "tool_name": "roi_table_for_A",
+        "tool_arguments": {
+          "A": "iphone",
+          "platforms": ["Shopee"],
+          "group_by": "seller",
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "iphone",
+          "platforms": ["Shopee"],
+          "group_by": "seller",
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "tool_call_exact_match",
+        "slot_accuracy_group_by"
+      ]
+    }
+  },
+  {
+    "id": "brand_compare_three_way",
+    "user_query": "So sánh thị phần của Xiaomi, Oppo và Vivo trong mảng điện thoại trên các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "brand_share comparing three specific brands - FORWARD LOOKING: expects backend to support multi-brand filtering in future."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "brand_share",
+        "tool_name": "brand_share_chart",
+        "tool_arguments": {
+          "A": "điện thoại",
+          "platforms": null,
+          "metric": "revenue_est",
+          "normalize": true,
+          "min_reviews": 0,
+          "use_brand_lock": false,
+          "hint": {
+            "brands": ["Xiaomi", "Oppo", "Vivo"]
+          }
+        },
+        "slots": {
+          "A": "điện thoại",
+          "platforms": null,
+          "metric": "revenue_est",
+          "normalize": true,
+          "min_reviews": 0,
+          "brands": ["Xiaomi", "Oppo", "Vivo"]
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_A",
+        "slot_accuracy_brands",
+        "multi_brand_extraction"
+      ]
+    }
+  },
+  {
+    "id": "sold_distribution_single_platform",
+    "user_query": "Phân bố số lượng bán của bàn phím cơ trên TikTok Shop theo mặc định.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "sold_distribution on single platform with default bins."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "sold_distribution",
+        "tool_name": "sold_distribution",
+        "tool_arguments": {
+          "A": "bàn phím cơ",
+          "platforms": ["TikTok Shop"],
+          "bins": [0, 10, 50, 100, 500, 1000, 5000, 10000],
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "bàn phím cơ",
+          "platforms": ["TikTok Shop"],
+          "bins": [0, 10, 50, 100, 500, 1000, 5000, 10000],
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": ["intent_accuracy", "slot_f1_platforms"]
+    }
+  },
+  {
+    "id": "category_split_by_category",
+    "user_query": "Các mẫu tai nghe phân bố vào những danh mục con nào trên tất cả các sàn?",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "category_split using default categories field."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "category_split",
+        "tool_name": "category_count_plot",
+        "tool_arguments": {
+          "A": "tai nghe",
+          "platforms": null,
+          "sublevel_field": "categories",
+          "top_k": null,
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "tai nghe",
+          "platforms": null,
+          "sublevel_field": "categories",
+          "top_k": null,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "tool_call_exact_match",
+        "slot_f1_product_A"
+      ]
+    }
+  },
+  {
+    "id": "price_summary_with_min_reviews",
+    "user_query": "Khoảng giá của loa bluetooth có ít nhất 20 đánh giá trên các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "price_summary with min_reviews filter."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments": {
+          "A": "loa bluetooth",
+          "platforms": null,
+          "min_reviews": 20,
+          "by_platform": false,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "loa bluetooth",
+          "platforms": null,
+          "min_reviews": 20,
+          "by_platform": false
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": ["intent_accuracy", "slot_accuracy_min_reviews"]
+    }
+  },
+  {
+    "id": "multi_product_comparison",
+    "user_query": "So sánh giá của iPad Air và iPad Pro trên Shopee.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "MULTI-INTENT: Two price_summary calls for iPad Air vs iPad Pro comparison."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments": {
+          "A": "ipad air",
+          "platforms": ["Shopee"],
+          "min_reviews": 0,
+          "by_platform": false,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "ipad air",
+          "platforms": ["Shopee"],
+          "min_reviews": 0,
+          "by_platform": false
+        }
+      },
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments": {
+          "A": "ipad pro",
+          "platforms": ["Shopee"],
+          "min_reviews": 0,
+          "by_platform": false,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "ipad pro",
+          "platforms": ["Shopee"],
+          "min_reviews": 0,
+          "by_platform": false
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "multi_intent_detection",
+        "tool_sequence_accuracy",
+        "slot_f1_product_A",
+        "slot_f1_platforms"
+      ]
+    }
+  },
+  {
+    "id": "product_analysis_basic",
+    "user_query": "Phân tích sản phẩm iPhone 15 trên tất cả các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "Basic product_analysis query for comprehensive product evaluation."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "product_analysis",
+        "tool_name": "get_product_analysis",
+        "tool_arguments": {
+          "product_name": "iphone 15",
+          "platforms": null,
+          "min_reviews": 0
+        },
+        "slots": {
+          "product_name": "iphone 15",
+          "platforms": null,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms"
+      ]
+    }
+  },
+  {
+    "id": "advanced_market_analysis_platform",
+    "user_query": "Phân tích thị trường laptop gaming trên Shopee và Lazada.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "Advanced market analysis with ROI grouped by platform."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "advanced_market_analysis",
+        "tool_name": "get_advanced_market_analysis",
+        "tool_arguments": {
+          "product_name": "laptop gaming",
+          "platforms": ["Shopee", "Lazada"],
+          "min_reviews": 0,
+          "group_roi_by": "platform",
+          "min_products_div": 5
+        },
+        "slots": {
+          "product_name": "laptop gaming",
+          "platforms": ["Shopee", "Lazada"],
+          "min_reviews": 0,
+          "group_roi_by": "platform",
+          "min_products_div": 5
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms",
+        "slot_accuracy_group_roi_by"
+      ]
+    }
+  },
+  {
+    "id": "advanced_market_analysis_brand",
+    "user_query": "Phân tích thị trường tai nghe theo thương hiệu trên tất cả các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "Advanced market analysis with ROI grouped by brand."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "advanced_market_analysis",
+        "tool_name": "get_advanced_market_analysis",
+        "tool_arguments": {
+          "product_name": "tai nghe",
+          "platforms": null,
+          "min_reviews": 0,
+          "group_roi_by": "brand",
+          "min_products_div": 5
+        },
+        "slots": {
+          "product_name": "tai nghe",
+          "platforms": null,
+          "min_reviews": 0,
+          "group_roi_by": "brand",
+          "min_products_div": 5
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_accuracy_group_roi_by"
+      ]
+    }
+  },
+  {
+    "id": "advanced_market_analysis_seller",
+    "user_query": "Phân tích thị trường máy ảnh theo người bán trên Shopee với shop có ít nhất 15 sản phẩm.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "Advanced market analysis with ROI grouped by seller and custom min_products_div threshold."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "advanced_market_analysis",
+        "tool_name": "get_advanced_market_analysis",
+        "tool_arguments": {
+          "product_name": "máy ảnh",
+          "platforms": ["Shopee"],
+          "min_reviews": 0,
+          "group_roi_by": "seller",
+          "min_products_div": 15
+        },
+        "slots": {
+          "product_name": "máy ảnh",
+          "platforms": ["Shopee"],
+          "min_reviews": 0,
+          "group_roi_by": "seller",
+          "min_products_div": 15
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms",
+        "slot_accuracy_group_roi_by",
+        "slot_accuracy_min_products_div"
+      ]
+    }
+  },
+  {
+    "id": "product_analysis_with_min_reviews",
+    "user_query": "Phân tích máy tính bảng Samsung trên Shopee với ít nhất 50 đánh giá.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "product_analysis with specific platform and min_reviews threshold."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "product_analysis",
+        "tool_name": "get_product_analysis",
+        "tool_arguments": {
+          "product_name": "máy tính bảng samsung",
+          "platforms": ["Shopee"],
+          "min_reviews": 50
+        },
+        "slots": {
+          "product_name": "máy tính bảng samsung",
+          "platforms": ["Shopee"],
+          "min_reviews": 50
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms",
+        "slot_accuracy_min_reviews"
+      ]
+    }
+  },
+  {
+    "id": "product_analysis_multi_platform",
+    "user_query": "Phân tích chi tiết loa bluetooth trên Shopee, Lazada và Tiki.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "product_analysis with multiple platforms specified."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "product_analysis",
+        "tool_name": "get_product_analysis",
+        "tool_arguments": {
+          "product_name": "loa bluetooth",
+          "platforms": ["Shopee", "Lazada", "Tiki"],
+          "min_reviews": 0
+        },
+        "slots": {
+          "product_name": "loa bluetooth",
+          "platforms": ["Shopee", "Lazada", "Tiki"],
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms"
+      ]
+    }
+  }
+]

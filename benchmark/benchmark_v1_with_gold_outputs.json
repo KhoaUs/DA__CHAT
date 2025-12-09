@@ -1,140 +1,207 @@
 [
   {
-    "id": "ex_0001_search_simple",
-    "user_query": "Liệt kê giúp tôi các mẫu iPhone SE đang bán trên Lazada có ít nhất 50 lượt đánh giá.",
+    "id": "rating_distribution_multi_brand",
+    "user_query": "Phân bố rating của laptop gaming các hãng Asus, MSI, Dell trên Shopee.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "Basic search_products with single platform, min_reviews."
+      "notes": "rating_distribution with multiple brand filtering - FORWARD LOOKING."
     },
     "gold_calls": [
       {
-        "intent_id": "search_products",
-        "tool_name": "search_products_hybrid",
+        "intent_id": "rating_distribution",
+        "tool_name": "rating_distribution",
         "tool_arguments": {
-          "A": "iphone se",
+          "A": "laptop gaming",
           "platforms": [
-            "Lazada"
+            "Shopee"
           ],
-          "min_reviews": 50,
-          "max_rows": 50,
-          "enforce_phrase": true
+          "bins": 20,
+          "group_by_brand": true,
+          "min_reviews": 0,
+          "use_brand_lock": false,
+          "hint": {
+            "brands": [
+              "Asus",
+              "MSI",
+              "Dell"
+            ]
+          }
         },
         "slots": {
-          "A": "iphone se",
+          "A": "laptop gaming",
           "platforms": [
-            "Lazada"
+            "Shopee"
           ],
-          "min_reviews": 50
+          "bins": 20,
+          "group_by_brand": true,
+          "min_reviews": 0,
+          "brands": [
+            "Asus",
+            "MSI",
+            "Dell"
+          ]
         }
       }
     ],
     "gold_tool_outputs": [
       {
-        "intent_id": "search_products",
-        "tool_name": "search_products_hybrid",
+        "intent_id": "rating_distribution",
+        "tool_name": "rating_distribution",
         "tool_arguments_used": {
-          "A": "iphone se",
+          "A": "laptop gaming",
           "platforms": [
-            "Lazada"
+            "Shopee"
           ],
-          "min_reviews": 50,
-          "max_rows": 50,
-          "enforce_phrase": true
+          "bins": 20,
+          "group_by_brand": true,
+          "min_reviews": 0,
+          "use_brand_lock": false,
+          "hint": {
+            "brands": [
+              "Asus",
+              "MSI",
+              "Dell"
+            ]
+          }
+        },
+        "output": {
+          "data": [],
+          "meta": {
+            "product_query": "laptop gaming",
+            "detected_category": null,
+            "confidence": 0.2,
+            "filters": {
+              "platforms": [
+                "Shopee"
+              ],
+              "time_window": null,
+              "brand": null,
+              "sku": null,
+              "min_reviews": 0
+            },
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; no rating data",
+            "ts_generated": "2025-12-09T21:48:44.710572+00:00",
+            "brand_guess": null,
+            "bin_edges": []
+          }
+        }
+      }
+    ],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_platforms",
+        "slot_f1_product_A",
+        "slot_accuracy_brands"
+      ]
+    }
+  },
+  {
+    "id": "sold_distribution_custom_bins",
+    "user_query": "Phân bố số lượng bán của camera theo các mức: dưới 50, 50-200, 200-1000, trên 1000.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "sold_distribution with custom bin ranges."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "sold_distribution",
+        "tool_name": "sold_distribution",
+        "tool_arguments": {
+          "A": "camera",
+          "platforms": null,
+          "bins": [
+            0,
+            50,
+            200,
+            1000,
+            10000
+          ],
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "camera",
+          "platforms": null,
+          "bins": [
+            0,
+            50,
+            200,
+            1000,
+            10000
+          ],
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [
+      {
+        "intent_id": "sold_distribution",
+        "tool_name": "sold_distribution",
+        "tool_arguments_used": {
+          "A": "camera",
+          "platforms": null,
+          "bins": [
+            0,
+            50,
+            200,
+            1000,
+            10000
+          ],
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "output": {
           "data": [
             {
-              "sku": "5IFQY7XKRE6",
-              "product_name": "iPhone SE 2390 Apple",
-              "platform": "Lazada",
-              "super_category": "Phones & Accessories",
-              "categories": "Mobiles",
-              "brand": "Apple",
-              "price": 51455235.0,
-              "sold": 6399.0,
-              "rating": 4.7,
-              "review_count": 4847,
-              "seller_name": "Apple Flagship Store",
-              "url": "https://www.lazada.vn/products/iphone-se-2390-apple.html"
+              "platform": "Shopee",
+              "bin_left": 0.0,
+              "bin_right": 50.0,
+              "count": 3,
+              "pct": 0.15
+            },
+            {
+              "platform": "Shopee",
+              "bin_left": 50.0,
+              "bin_right": 200.0,
+              "count": 6,
+              "pct": 0.3
+            },
+            {
+              "platform": "Shopee",
+              "bin_left": 200.0,
+              "bin_right": 1000.0,
+              "count": 8,
+              "pct": 0.4
+            },
+            {
+              "platform": "Shopee",
+              "bin_left": 1000.0,
+              "bin_right": 10000.0,
+              "count": 3,
+              "pct": 0.15
+            },
+            {
+              "platform": "Tiki",
+              "bin_left": 0.0,
+              "bin_right": 50.0,
+              "count": 145,
+              "pct": 0.9863945578231292
+            },
+            {
+              "platform": "Tiki",
+              "bin_left": 50.0,
+              "bin_right": 200.0,
+              "count": 2,
+              "pct": 0.013605442176870748
             }
           ],
           "meta": {
-            "product_query": "iphone se",
-            "detected_category": "Phones & Accessories",
-            "confidence": 0.8,
-            "filters": {
-              "platforms": [
-                "Lazada"
-              ],
-              "time_window": null,
-              "brand": "Apple",
-              "sku": null,
-              "min_reviews": 50
-            },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Phones & Accessories; brand_from_hits=Apple; hybrid_search + phrase_filter=True",
-            "ts_generated": "2025-12-07T08:07:35.869464+00:00",
-            "brand_guess": "Apple"
-          }
-        }
-      }
-    ],
-    "eval_config": {
-      "metrics": [
-        "intent_accuracy",
-        "tool_name_accuracy",
-        "tool_call_exact_match",
-        "slot_f1_platforms",
-        "slot_f1_product_A",
-        "slot_accuracy_min_reviews",
-        "retrieval_precision_at_k",
-        "retrieval_recall_at_k"
-      ]
-    }
-  },
-  {
-    "id": "ex_0002_search_all_platforms",
-    "user_query": "Tìm cho tôi các mẫu tai nghe bluetooth tầm trung khoảng 500k trên tất cả các sàn.",
-    "language": "vi",
-    "context": {
-      "intent_taxonomy_version": "v1.0",
-      "notes": "search_products with all default platforms, no explicit min_reviews."
-    },
-    "gold_calls": [
-      {
-        "intent_id": "search_products",
-        "tool_name": "search_products_hybrid",
-        "tool_arguments": {
-          "A": "tai nghe bluetooth tầm trung 500k",
-          "platforms": null,
-          "min_reviews": 0,
-          "max_rows": 50,
-          "enforce_phrase": true
-        },
-        "slots": {
-          "A": "tai nghe bluetooth tầm trung 500k",
-          "platforms": null,
-          "min_reviews": 0
-        }
-      }
-    ],
-    "gold_tool_outputs": [
-      {
-        "intent_id": "search_products",
-        "tool_name": "search_products_hybrid",
-        "tool_arguments_used": {
-          "A": "tai nghe bluetooth tầm trung 500k",
-          "platforms": null,
-          "min_reviews": 0,
-          "max_rows": 50,
-          "enforce_phrase": true
-        },
-        "output": {
-          "data": [],
-          "meta": {
-            "product_query": "tai nghe bluetooth tầm trung 500k",
-            "detected_category": "Audio Devices",
-            "confidence": 0.8,
+            "product_query": "camera",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
                 "Lazada",
@@ -144,13 +211,20 @@
                 "Sendo"
               ],
               "time_window": null,
-              "brand": "Hoco",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Audio Devices; brand_from_hits=Hoco; hybrid_search + phrase_filter=True",
-            "ts_generated": "2025-12-07T08:07:36.088633+00:00",
-            "brand_guess": "Hoco"
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_sold_distribution over search subset",
+            "ts_generated": "2025-12-09T21:48:44.882790+00:00",
+            "brand_guess": null,
+            "bin_edges": [
+              0.0,
+              50.0,
+              200.0,
+              1000.0,
+              10000.0
+            ]
           }
         }
       }
@@ -158,407 +232,81 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "tool_name_accuracy",
         "slot_f1_product_A",
-        "retrieval_precision_at_k"
+        "slot_accuracy_bins"
       ]
     }
   },
   {
-    "id": "ex_0003_price_summary_two_platforms",
-    "user_query": "Cho tôi xem so sánh giá iPhone 15 Pro 256GB giữa Shopee và Lazada, chỉ tính sản phẩm có từ 100 đánh giá trở lên.",
+    "id": "category_split_with_limit",
+    "user_query": "Top 5 danh mục con của thiết bị điện tử trên Tiki là gì?",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "price_summary with explicit platforms and min_reviews, by_platform true."
+      "notes": "category_split with explicit top_k limit."
     },
     "gold_calls": [
       {
-        "intent_id": "price_summary",
-        "tool_name": "fe_describe_price",
+        "intent_id": "category_split",
+        "tool_name": "category_count_plot",
         "tool_arguments": {
-          "A": "iphone 15 pro 256gb",
+          "A": "thiết bị điện tử",
           "platforms": [
-            "Shopee",
-            "Lazada"
-          ],
-          "min_reviews": 100,
-          "by_platform": true
-        },
-        "slots": {
-          "A": "iphone 15 pro 256gb",
-          "platforms": [
-            "Shopee",
-            "Lazada"
-          ],
-          "min_reviews": 100,
-          "by_platform": true
-        }
-      }
-    ],
-    "gold_tool_outputs": [
-      {
-        "intent_id": "price_summary",
-        "tool_name": "fe_describe_price",
-        "tool_arguments_used": {
-          "A": "iphone 15 pro 256gb",
-          "platforms": [
-            "Shopee",
-            "Lazada"
-          ],
-          "min_reviews": 100,
-          "by_platform": true
-        },
-        "output": {
-          "data": [],
-          "meta": {
-            "product_query": "iphone 15 pro 256gb",
-            "detected_category": "Storage",
-            "confidence": 0.8,
-            "filters": {
-              "platforms": [
-                "Shopee",
-                "Lazada"
-              ],
-              "time_window": null,
-              "brand": "Apple",
-              "sku": null,
-              "min_reviews": 100
-            },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Storage; brand_from_hits=Apple; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:36.205529+00:00",
-            "brand_guess": "Apple"
-          }
-        }
-      }
-    ],
-    "eval_config": {
-      "metrics": [
-        "intent_accuracy",
-        "tool_call_exact_match",
-        "slot_f1_platforms",
-        "slot_accuracy_min_reviews",
-        "agg_mape_median_price",
-        "agg_mape_mean_price"
-      ]
-    }
-  },
-  {
-    "id": "ex_0004_price_summary_all_platforms",
-    "user_query": "Tóm tắt giúp tôi khoảng giá laptop gaming dưới 30 triệu trên các sàn, không cần tách theo từng sàn.",
-    "language": "vi",
-    "context": {
-      "intent_taxonomy_version": "v1.0",
-      "notes": "price_summary, no platforms given, by_platform=false."
-    },
-    "gold_calls": [
-      {
-        "intent_id": "price_summary",
-        "tool_name": "fe_describe_price",
-        "tool_arguments": {
-          "A": "laptop gaming dưới 30 triệu",
-          "platforms": null,
-          "min_reviews": 0,
-          "by_platform": false
-        },
-        "slots": {
-          "A": "laptop gaming dưới 30 triệu",
-          "platforms": null,
-          "min_reviews": 0,
-          "by_platform": false
-        }
-      }
-    ],
-    "gold_tool_outputs": [
-      {
-        "intent_id": "price_summary",
-        "tool_name": "fe_describe_price",
-        "tool_arguments_used": {
-          "A": "laptop gaming dưới 30 triệu",
-          "platforms": null,
-          "min_reviews": 0,
-          "by_platform": false
-        },
-        "output": {
-          "data": [],
-          "meta": {
-            "product_query": "laptop gaming dưới 30 triệu",
-            "detected_category": "Cameras & Drones",
-            "confidence": 0.8,
-            "filters": {
-              "platforms": [
-                "Lazada",
-                "Shopee",
-                "Tiki",
-                "TikTokShop",
-                "Sendo"
-              ],
-              "time_window": null,
-              "brand": "IMOU",
-              "sku": null,
-              "min_reviews": 0
-            },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Cameras & Drones; brand_from_hits=IMOU; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:36.416748+00:00",
-            "brand_guess": "IMOU"
-          }
-        }
-      }
-    ],
-    "eval_config": {
-      "metrics": [
-        "intent_accuracy",
-        "tool_call_exact_match",
-        "slot_f1_product_A",
-        "agg_mape_median_price"
-      ]
-    }
-  },
-  {
-    "id": "ex_0005_rating_distribution_by_brand",
-    "user_query": "Phân tích giúp tôi phân bố rating của tai nghe AirPods Pro trên Shopee, tách theo từng brand nếu có.",
-    "language": "vi",
-    "context": {
-      "intent_taxonomy_version": "v1.0",
-      "notes": "rating_distribution with group_by_brand=true."
-    },
-    "gold_calls": [
-      {
-        "intent_id": "rating_distribution",
-        "tool_name": "fe_rating_distribution",
-        "tool_arguments": {
-          "A": "airpods pro",
-          "platforms": [
-            "Shopee"
-          ],
-          "bins": 20,
-          "group_by_brand": true,
-          "min_reviews": 0
-        },
-        "slots": {
-          "A": "airpods pro",
-          "platforms": [
-            "Shopee"
-          ],
-          "bins": 20,
-          "group_by_brand": true,
-          "min_reviews": 0
-        }
-      }
-    ],
-    "gold_tool_outputs": [
-      {
-        "intent_id": "rating_distribution",
-        "tool_name": "fe_rating_distribution",
-        "tool_arguments_used": {
-          "A": "airpods pro",
-          "platforms": [
-            "Shopee"
-          ],
-          "bins": 20,
-          "group_by_brand": true,
-          "min_reviews": 0
-        },
-        "output": {
-          "data": [],
-          "meta": {
-            "product_query": "airpods pro",
-            "detected_category": "Tablets & E-Readers",
-            "confidence": 0.8,
-            "filters": {
-              "platforms": [
-                "Shopee"
-              ],
-              "time_window": null,
-              "brand": "Huawei",
-              "sku": null,
-              "min_reviews": 0
-            },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Tablets & E-Readers; brand_from_hits=Huawei; hybrid_search + phrase_filter=True; no rating data",
-            "ts_generated": "2025-12-07T08:07:36.498293+00:00",
-            "brand_guess": "Huawei",
-            "bin_edges": []
-          }
-        }
-      }
-    ],
-    "eval_config": {
-      "metrics": [
-        "intent_accuracy",
-        "tool_call_exact_match",
-        "slot_f1_platforms"
-      ]
-    }
-  },
-  {
-    "id": "ex_0006_rating_distribution_overall",
-    "user_query": "Cho tôi xem phân bố điểm đánh giá của tivi Samsung 55 inch trên tất cả các sàn, không cần tách theo brand.",
-    "language": "vi",
-    "context": {
-      "intent_taxonomy_version": "v1.0",
-      "notes": "rating_distribution with group_by_brand=false."
-    },
-    "gold_calls": [
-      {
-        "intent_id": "rating_distribution",
-        "tool_name": "fe_rating_distribution",
-        "tool_arguments": {
-          "A": "tivi samsung 55 inch",
-          "platforms": null,
-          "bins": 20,
-          "group_by_brand": false,
-          "min_reviews": 0
-        },
-        "slots": {
-          "A": "tivi samsung 55 inch",
-          "platforms": null,
-          "bins": 20,
-          "group_by_brand": false,
-          "min_reviews": 0
-        }
-      }
-    ],
-    "gold_tool_outputs": [
-      {
-        "intent_id": "rating_distribution",
-        "tool_name": "fe_rating_distribution",
-        "tool_arguments_used": {
-          "A": "tivi samsung 55 inch",
-          "platforms": null,
-          "bins": 20,
-          "group_by_brand": false,
-          "min_reviews": 0
-        },
-        "output": {
-          "data": [],
-          "meta": {
-            "product_query": "tivi samsung 55 inch",
-            "detected_category": "Tablets & E-Readers",
-            "confidence": 0.8,
-            "filters": {
-              "platforms": [
-                "Lazada",
-                "Shopee",
-                "Tiki",
-                "TikTokShop",
-                "Sendo"
-              ],
-              "time_window": null,
-              "brand": "Samsung",
-              "sku": null,
-              "min_reviews": 0
-            },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Tablets & E-Readers; brand_from_hits=Samsung; hybrid_search + phrase_filter=True; no rating data",
-            "ts_generated": "2025-12-07T08:07:36.738808+00:00",
-            "brand_guess": "Samsung",
-            "bin_edges": []
-          }
-        }
-      }
-    ],
-    "eval_config": {
-      "metrics": [
-        "intent_accuracy",
-        "slot_f1_product_A"
-      ]
-    }
-  },
-  {
-    "id": "ex_0007_sold_distribution_platforms",
-    "user_query": "Phân bố số lượng bán của nồi chiên không dầu trên Shopee, Lazada và Tiki như thế nào?",
-    "language": "vi",
-    "context": {
-      "intent_taxonomy_version": "v1.0",
-      "notes": "sold_distribution with explicit multiple platforms."
-    },
-    "gold_calls": [
-      {
-        "intent_id": "sold_distribution",
-        "tool_name": "fe_sold_distribution",
-        "tool_arguments": {
-          "A": "nồi chiên không dầu",
-          "platforms": [
-            "Shopee",
-            "Lazada",
             "Tiki"
           ],
-          "bins": [
-            0,
-            10,
-            50,
-            100,
-            500,
-            1000,
-            5000,
-            10000
-          ],
-          "min_reviews": 0
+          "sublevel_field": "categories",
+          "top_k": 5,
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "slots": {
-          "A": "nồi chiên không dầu",
+          "A": "thiết bị điện tử",
           "platforms": [
-            "Shopee",
-            "Lazada",
             "Tiki"
           ],
-          "bins": [
-            0,
-            10,
-            50,
-            100,
-            500,
-            1000,
-            5000,
-            10000
-          ],
+          "sublevel_field": "categories",
+          "top_k": 5,
           "min_reviews": 0
         }
       }
     ],
     "gold_tool_outputs": [
       {
-        "intent_id": "sold_distribution",
-        "tool_name": "fe_sold_distribution",
+        "intent_id": "category_split",
+        "tool_name": "category_count_plot",
         "tool_arguments_used": {
-          "A": "nồi chiên không dầu",
+          "A": "thiết bị điện tử",
           "platforms": [
-            "Shopee",
-            "Lazada",
             "Tiki"
           ],
-          "bins": [
-            0,
-            10,
-            50,
-            100,
-            500,
-            1000,
-            5000,
-            10000
-          ],
-          "min_reviews": 0
+          "sublevel_field": "categories",
+          "top_k": 5,
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "output": {
-          "data": [],
+          "data": [
+            {
+              "product_count": "True Wireless Earbuds",
+              "count": 1
+            }
+          ],
           "meta": {
-            "product_query": "nồi chiên không dầu",
-            "detected_category": "Printers & Scanners",
-            "confidence": 0.8,
+            "product_query": "thiết bị điện tử",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
-                "Shopee",
-                "Lazada",
                 "Tiki"
               ],
               "time_window": null,
-              "brand": "Puty",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Printers & Scanners; brand_from_hits=Puty; hybrid_search + phrase_filter=True; no sold data",
-            "ts_generated": "2025-12-07T08:07:36.951365+00:00",
-            "brand_guess": "Puty",
-            "bin_edges": []
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_category_count_plot over search subset",
+            "ts_generated": "2025-12-09T21:48:45.035577+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -566,73 +314,76 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "slot_f1_platforms"
+        "tool_call_exact_match",
+        "slot_accuracy_top_k"
       ]
     }
   },
   {
-    "id": "ex_0008_category_split_default",
-    "user_query": "Các mẫu laptop văn phòng trên Shopee đang rơi vào những danh mục con nào nhiều nhất?",
+    "id": "brand_share_by_revenue",
+    "user_query": "Thị phần các hãng máy ảnh theo doanh thu ước tính trên Lazada như thế nào?",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "category_split with sublevel_field=categories, top_k default."
+      "notes": "brand_share with revenue_est metric on single platform."
     },
     "gold_calls": [
       {
-        "intent_id": "category_split",
-        "tool_name": "fe_category_count_plot",
+        "intent_id": "brand_share",
+        "tool_name": "brand_share_chart",
         "tool_arguments": {
-          "A": "laptop văn phòng",
+          "A": "máy ảnh",
           "platforms": [
-            "Shopee"
+            "Lazada"
           ],
-          "sublevel_field": "categories",
-          "top_k": null,
-          "min_reviews": 0
+          "metric": "revenue_est",
+          "normalize": true,
+          "min_reviews": 0,
+          "use_brand_lock": false
         },
         "slots": {
-          "A": "laptop văn phòng",
+          "A": "máy ảnh",
           "platforms": [
-            "Shopee"
+            "Lazada"
           ],
-          "sublevel_field": "categories",
-          "top_k": null,
+          "metric": "revenue_est",
+          "normalize": true,
           "min_reviews": 0
         }
       }
     ],
     "gold_tool_outputs": [
       {
-        "intent_id": "category_split",
-        "tool_name": "fe_category_count_plot",
+        "intent_id": "brand_share",
+        "tool_name": "brand_share_chart",
         "tool_arguments_used": {
-          "A": "laptop văn phòng",
+          "A": "máy ảnh",
           "platforms": [
-            "Shopee"
+            "Lazada"
           ],
-          "sublevel_field": "categories",
-          "top_k": null,
-          "min_reviews": 0
+          "metric": "revenue_est",
+          "normalize": true,
+          "min_reviews": 0,
+          "use_brand_lock": false
         },
         "output": {
           "data": [],
           "meta": {
-            "product_query": "laptop văn phòng",
-            "detected_category": "Tablets & E-Readers",
-            "confidence": 0.8,
+            "product_query": "máy ảnh",
+            "detected_category": null,
+            "confidence": 0.1,
             "filters": {
               "platforms": [
-                "Shopee"
+                "Lazada"
               ],
               "time_window": null,
-              "brand": "no brand",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Tablets & E-Readers; brand_from_hits=no brand; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:37.034901+00:00",
-            "brand_guess": "no brand"
+            "notes": "resolve_product; no_hits; hybrid_search + phrase_filter=True; no data",
+            "ts_generated": "2025-12-09T21:48:45.047607+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -640,33 +391,35 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "tool_call_exact_match"
+        "slot_f1_platforms",
+        "slot_accuracy_metric"
       ]
     }
   },
   {
-    "id": "ex_0009_brand_share_revenue",
-    "user_query": "Thị phần các hãng điện thoại thông minh (smartphone) theo doanh thu ước tính trên các sàn lớn hiện nay như thế nào?",
+    "id": "brand_share_by_sku",
+    "user_query": "Thị phần các hãng điện thoại theo số lượng sản phẩm (SKU) trên tất cả các sàn.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "brand_share with metric=revenue_est, normalize=true."
+      "notes": "brand_share with sku metric across all platforms."
     },
     "gold_calls": [
       {
         "intent_id": "brand_share",
-        "tool_name": "fe_brand_share_chart",
+        "tool_name": "brand_share_chart",
         "tool_arguments": {
-          "A": "điện thoại thông minh",
+          "A": "điện thoại",
           "platforms": null,
-          "metric": "revenue_est",
+          "metric": "sku",
           "normalize": true,
-          "min_reviews": 0
+          "min_reviews": 0,
+          "use_brand_lock": false
         },
         "slots": {
-          "A": "điện thoại thông minh",
+          "A": "điện thoại",
           "platforms": null,
-          "metric": "revenue_est",
+          "metric": "sku",
           "normalize": true,
           "min_reviews": 0
         }
@@ -675,20 +428,322 @@
     "gold_tool_outputs": [
       {
         "intent_id": "brand_share",
-        "tool_name": "fe_brand_share_chart",
+        "tool_name": "brand_share_chart",
         "tool_arguments_used": {
-          "A": "điện thoại thông minh",
+          "A": "điện thoại",
           "platforms": null,
-          "metric": "revenue_est",
+          "metric": "sku",
           "normalize": true,
-          "min_reviews": 0
+          "min_reviews": 0,
+          "use_brand_lock": false
         },
         "output": {
-          "data": [],
+          "data": [
+            {
+              "platform": "Shopee",
+              "brand": "Blue",
+              "value": 1.0,
+              "share_pct": 5.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Hisense",
+              "value": 2.0,
+              "share_pct": 10.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "IMOU",
+              "value": 1.0,
+              "share_pct": 5.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "KINGMAX",
+              "value": 1.0,
+              "share_pct": 5.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Kioxia",
+              "value": 1.0,
+              "share_pct": 5.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "NAHU",
+              "value": 1.0,
+              "share_pct": 5.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Samsung",
+              "value": 1.0,
+              "share_pct": 5.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Sandisk",
+              "value": 2.0,
+              "share_pct": 10.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "dahua",
+              "value": 2.0,
+              "share_pct": 10.0
+            },
+            {
+              "platform": "Shopee",
+              "brand": "no brand",
+              "value": 8.0,
+              "share_pct": 40.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "AIMO",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "AMA",
+              "value": 3.0,
+              "share_pct": 3.0303030303030303
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Baseus",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Boya",
+              "value": 2.0,
+              "share_pct": 2.0202020202020203
+            },
+            {
+              "platform": "Tiki",
+              "brand": "CARECAM",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "EZVIZ",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Earldom",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Fanvil",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Flyingvoice",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "GUTEK",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Grandstream",
+              "value": 2.0,
+              "share_pct": 2.0202020202020203
+            },
+            {
+              "platform": "Tiki",
+              "brand": "HXSJ",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Hammer",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Hoco",
+              "value": 4.0,
+              "share_pct": 4.040404040404041
+            },
+            {
+              "platform": "Tiki",
+              "brand": "KTEL",
+              "value": 2.0,
+              "share_pct": 2.0202020202020203
+            },
+            {
+              "platform": "Tiki",
+              "brand": "LDK.ai",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Langston",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "LuckyJQR",
+              "value": 4.0,
+              "share_pct": 4.040404040404041
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Masstel",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Panasonic",
+              "value": 22.0,
+              "share_pct": 22.22222222222222
+            },
+            {
+              "platform": "Tiki",
+              "brand": "ROGTZ",
+              "value": 9.0,
+              "share_pct": 9.090909090909092
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Remax",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Rihatech",
+              "value": 3.0,
+              "share_pct": 3.0303030303030303
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Rode",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "SOAIY",
+              "value": 2.0,
+              "share_pct": 2.0202020202020203
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Saramonic",
+              "value": 6.0,
+              "share_pct": 6.0606060606060606
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Shidu",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Tecno",
+              "value": 5.0,
+              "share_pct": 5.05050505050505
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Uniden",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "VIETHAS",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "VR Shinecon",
+              "value": 3.0,
+              "share_pct": 3.0303030303030303
+            },
+            {
+              "platform": "Tiki",
+              "brand": "VSP",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Vivo",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "WIWU",
+              "value": 3.0,
+              "share_pct": 3.0303030303030303
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Xiaomi",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Xprinter",
+              "value": 2.0,
+              "share_pct": 2.0202020202020203
+            },
+            {
+              "platform": "Tiki",
+              "brand": "YHDAA",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Yealink",
+              "value": 3.0,
+              "share_pct": 3.0303030303030303
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Zealot ",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            },
+            {
+              "platform": "Tiki",
+              "brand": "ratoff-ars",
+              "value": 1.0,
+              "share_pct": 1.0101010101010102
+            }
+          ],
           "meta": {
-            "product_query": "điện thoại thông minh",
-            "detected_category": "Printers & Scanners",
-            "confidence": 0.8,
+            "product_query": "điện thoại",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
                 "Lazada",
@@ -698,13 +753,13 @@
                 "Sendo"
               ],
               "time_window": null,
-              "brand": "Puty",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Printers & Scanners; brand_from_hits=Puty; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:37.256941+00:00",
-            "brand_guess": "Puty"
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_brand_share_chart metric=sku over search subset",
+            "ts_generated": "2025-12-09T21:48:45.241948+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -712,38 +767,39 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "slot_f1_product_A"
+        "slot_accuracy_metric"
       ]
     }
   },
   {
-    "id": "ex_0010_top_sellers_by_sold",
-    "user_query": "Top 10 seller bán MacBook trên Shopee theo số lượng bán là những ai?",
+    "id": "top_sellers_by_sold_count",
+    "user_query": "Top 8 seller bán điện thoại Samsung nhiều nhất trên Tiki theo số lượng bán.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "top_sellers with by='sold' and top_k=10."
+      "notes": "top_sellers with brand filter and sold metric."
     },
     "gold_calls": [
       {
         "intent_id": "top_sellers",
-        "tool_name": "fe_top_sellers",
+        "tool_name": "top_sellers",
         "tool_arguments": {
-          "A": "macbook",
+          "A": "điện thoại samsung",
           "platforms": [
-            "Shopee"
+            "Tiki"
           ],
           "by": "sold",
-          "top_k": 10,
-          "min_reviews": 0
+          "top_k": 8,
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "slots": {
-          "A": "macbook",
+          "A": "điện thoại samsung",
           "platforms": [
-            "Shopee"
+            "Tiki"
           ],
           "by": "sold",
-          "top_k": 10,
+          "top_k": 8,
           "min_reviews": 0
         }
       }
@@ -751,34 +807,35 @@
     "gold_tool_outputs": [
       {
         "intent_id": "top_sellers",
-        "tool_name": "fe_top_sellers",
+        "tool_name": "top_sellers",
         "tool_arguments_used": {
-          "A": "macbook",
+          "A": "điện thoại samsung",
           "platforms": [
-            "Shopee"
+            "Tiki"
           ],
           "by": "sold",
-          "top_k": 10,
-          "min_reviews": 0
+          "top_k": 8,
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "output": {
           "data": [],
           "meta": {
-            "product_query": "macbook",
+            "product_query": "điện thoại samsung",
             "detected_category": null,
-            "confidence": 0.4,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
-                "Shopee"
+                "Tiki"
               ],
               "time_window": null,
-              "brand": "Apple",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; brand_from_keyword=Apple; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:37.322983+00:00",
-            "brand_guess": "Apple"
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; no data",
+            "ts_generated": "2025-12-09T21:48:45.397382+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -786,33 +843,35 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "tool_call_exact_match"
+        "tool_call_exact_match",
+        "slot_accuracy_top_k"
       ]
     }
   },
   {
-    "id": "ex_0011_top_brands_tv",
-    "user_query": "Cho tôi xem top 5 thương hiệu tivi theo doanh thu ước tính trên tất cả các sàn.",
+    "id": "top_brands_by_sold",
+    "user_query": "Top 5 thương hiệu tai nghe bán chạy nhất trên tất cả các sàn.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "top_brands with by='revenue_est', top_k=5."
+      "notes": "top_brands with sold metric across all platforms."
     },
     "gold_calls": [
       {
         "intent_id": "top_brands",
-        "tool_name": "fe_top_brands",
+        "tool_name": "top_brands",
         "tool_arguments": {
-          "A": "tivi",
+          "A": "tai nghe",
           "platforms": null,
-          "by": "revenue_est",
+          "by": "sold",
           "top_k": 5,
-          "min_reviews": 0
+          "min_reviews": 0,
+          "use_brand_lock": false
         },
         "slots": {
-          "A": "tivi",
+          "A": "tai nghe",
           "platforms": null,
-          "by": "revenue_est",
+          "by": "sold",
           "top_k": 5,
           "min_reviews": 0
         }
@@ -821,27 +880,82 @@
     "gold_tool_outputs": [
       {
         "intent_id": "top_brands",
-        "tool_name": "fe_top_brands",
+        "tool_name": "top_brands",
         "tool_arguments_used": {
-          "A": "tivi",
+          "A": "tai nghe",
           "platforms": null,
-          "by": "revenue_est",
+          "by": "sold",
           "top_k": 5,
-          "min_reviews": 0
+          "min_reviews": 0,
+          "use_brand_lock": false
         },
         "output": {
           "data": [
             {
               "rank": 1,
-              "brand": "YABER",
+              "brand": "no brand",
+              "platform": "Shopee",
+              "value": 101795.0
+            },
+            {
+              "rank": 2,
+              "brand": "ACEVANTAGE",
+              "platform": "Shopee",
+              "value": 10000.0
+            },
+            {
+              "rank": 3,
+              "brand": "PUCEN",
+              "platform": "Shopee",
+              "value": 5000.0
+            },
+            {
+              "rank": 4,
+              "brand": "TZUZL",
+              "platform": "Shopee",
+              "value": 3656.0
+            },
+            {
+              "rank": 5,
+              "brand": "hoco.",
+              "platform": "Shopee",
+              "value": 1313.0
+            },
+            {
+              "rank": 1,
+              "brand": "Langston",
               "platform": "Tiki",
-              "value": 98400000.0
+              "value": 12128.0
+            },
+            {
+              "rank": 2,
+              "brand": "Hoco",
+              "platform": "Tiki",
+              "value": 2229.0
+            },
+            {
+              "rank": 3,
+              "brand": "ROCK SPACE",
+              "platform": "Tiki",
+              "value": 1301.0
+            },
+            {
+              "rank": 4,
+              "brand": "Besti",
+              "platform": "Tiki",
+              "value": 225.0
+            },
+            {
+              "rank": 5,
+              "brand": "MIREN",
+              "platform": "Tiki",
+              "value": 191.0
             }
           ],
           "meta": {
-            "product_query": "tivi",
-            "detected_category": "Office Equipment",
-            "confidence": 0.8,
+            "product_query": "tai nghe",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
                 "Lazada",
@@ -851,13 +965,13 @@
                 "Sendo"
               ],
               "time_window": null,
-              "brand": "YABER",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Office Equipment; brand_from_hits=YABER; hybrid_search + phrase_filter=True; fe_top_brands by=revenue_est over search subset",
-            "ts_generated": "2025-12-07T08:07:37.522491+00:00",
-            "brand_guess": "YABER"
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_top_brands by=sold over search subset",
+            "ts_generated": "2025-12-09T21:48:45.603384+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -865,36 +979,37 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "tool_name_accuracy"
+        "slot_f1_product_A"
       ]
     }
   },
   {
-    "id": "ex_0012_seller_diversity_tiki",
-    "user_query": "Trên Tiki, những seller nào đang bán đa dạng nhiều ngành hàng thiết bị điện tử nhất?",
+    "id": "seller_diversity_threshold",
+    "user_query": "Những seller nào bán ít nhất 10 sản phẩm laptop và đa dạng nhất trên TikTok Shop?",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "seller_diversity with single platform."
+      "notes": "seller_diversity with min_products threshold."
     },
     "gold_calls": [
       {
         "intent_id": "seller_diversity",
-        "tool_name": "fe_seller_diversity_index",
+        "tool_name": "seller_diversity_index",
         "tool_arguments": {
-          "A": "thiết bị điện tử",
+          "A": "laptop",
           "platforms": [
-            "Tiki"
+            "TikTok Shop"
           ],
-          "min_products": 5,
-          "min_reviews": 0
+          "min_products": 10,
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "slots": {
-          "A": "thiết bị điện tử",
+          "A": "laptop",
           "platforms": [
-            "Tiki"
+            "TikTok Shop"
           ],
-          "min_products": 5,
+          "min_products": 10,
           "min_reviews": 0
         }
       }
@@ -902,33 +1017,42 @@
     "gold_tool_outputs": [
       {
         "intent_id": "seller_diversity",
-        "tool_name": "fe_seller_diversity_index",
+        "tool_name": "seller_diversity_index",
         "tool_arguments_used": {
-          "A": "thiết bị điện tử",
+          "A": "laptop",
           "platforms": [
-            "Tiki"
+            "TikTok Shop"
           ],
-          "min_products": 5,
-          "min_reviews": 0
+          "min_products": 10,
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "output": {
-          "data": [],
+          "data": [
+            {
+              "seller_name": "Teemo PC",
+              "platform": "TikTok Shop",
+              "product_count": 13,
+              "unique_categories": 1,
+              "diversity_index": -1.000088900581841e-12
+            }
+          ],
           "meta": {
-            "product_query": "thiết bị điện tử",
-            "detected_category": "Printers & Scanners",
-            "confidence": 0.8,
+            "product_query": "laptop",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
-                "Tiki"
+                "TikTok Shop"
               ],
               "time_window": null,
-              "brand": "Puty",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Printers & Scanners; brand_from_hits=Puty; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:37.681422+00:00",
-            "brand_guess": "Puty"
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_seller_diversity_index over search subset",
+            "ts_generated": "2025-12-09T21:48:45.733994+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -936,42 +1060,44 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "slot_f1_platforms"
+        "slot_f1_platforms",
+        "slot_accuracy_min_products"
       ]
     }
   },
   {
-    "id": "ex_0013_price_range_by_category_brand",
-    "user_query": "Khoảng giá của tivi Samsung theo từng danh mục con trên Shopee và Lazada như thế nào? Chỉ lấy riêng brand Samsung.",
+    "id": "price_range_specific_brand",
+    "user_query": "Khoảng giá của máy ảnh Canon theo từng danh mục trên Shopee và Lazada.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "price_range_by_category with brand filter and multiple platforms."
+      "notes": "price_range_by_category with specific brand and multiple platforms."
     },
     "gold_calls": [
       {
         "intent_id": "price_range_by_category",
-        "tool_name": "fe_price_range_by_category",
+        "tool_name": "price_range_by_category",
         "tool_arguments": {
-          "A": "tivi samsung",
+          "A": "máy ảnh",
           "platforms": [
             "Shopee",
             "Lazada"
           ],
-          "brand": "Samsung",
+          "brand": "Canon",
           "quantiles": [
             0.1,
             0.9
           ],
-          "min_reviews": 0
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "slots": {
-          "A": "tivi samsung",
+          "A": "máy ảnh",
           "platforms": [
             "Shopee",
             "Lazada"
           ],
-          "brand": "Samsung",
+          "brand": "Canon",
           "quantiles": [
             0.1,
             0.9
@@ -983,39 +1109,40 @@
     "gold_tool_outputs": [
       {
         "intent_id": "price_range_by_category",
-        "tool_name": "fe_price_range_by_category",
+        "tool_name": "price_range_by_category",
         "tool_arguments_used": {
-          "A": "tivi samsung",
+          "A": "máy ảnh",
           "platforms": [
             "Shopee",
             "Lazada"
           ],
-          "brand": "Samsung",
+          "brand": "Canon",
           "quantiles": [
             0.1,
             0.9
           ],
-          "min_reviews": 0
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "output": {
           "data": [],
           "meta": {
-            "product_query": "tivi samsung",
-            "detected_category": "Tablets & E-Readers",
-            "confidence": 0.8,
+            "product_query": "máy ảnh",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
                 "Shopee",
                 "Lazada"
               ],
               "time_window": null,
-              "brand": "Samsung",
+              "brand": "Canon",
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Tablets & E-Readers; brand_from_hits=Samsung; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:37.797217+00:00",
-            "brand_guess": "Samsung"
+            "notes": "resolve_product; hybrid_search_hits; brand_from_hint=Canon; hybrid_search + phrase_filter=True; no data",
+            "ts_generated": "2025-12-09T21:48:45.780648+00:00",
+            "brand_guess": "Canon"
           }
         }
       }
@@ -1029,27 +1156,32 @@
     }
   },
   {
-    "id": "ex_0014_roi_table_platform",
-    "user_query": "So sánh ROI giữa các sàn cho iPad nói chung, dùng số lượng bán chia cho giá.",
+    "id": "roi_by_seller",
+    "user_query": "So sánh ROI giữa các seller bán iPhone trên Shopee.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "roi_table grouped by platform."
+      "notes": "roi_table grouped by seller with specific product."
     },
     "gold_calls": [
       {
         "intent_id": "roi_table",
-        "tool_name": "fe_roi_table_for_A",
+        "tool_name": "roi_table_for_A",
         "tool_arguments": {
-          "A": "ipad",
-          "platforms": null,
-          "group_by": "platform",
-          "min_reviews": 0
+          "A": "iphone",
+          "platforms": [
+            "Shopee"
+          ],
+          "group_by": "seller",
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "slots": {
-          "A": "ipad",
-          "platforms": null,
-          "group_by": "platform",
+          "A": "iphone",
+          "platforms": [
+            "Shopee"
+          ],
+          "group_by": "seller",
           "min_reviews": 0
         }
       }
@@ -1057,54 +1189,34 @@
     "gold_tool_outputs": [
       {
         "intent_id": "roi_table",
-        "tool_name": "fe_roi_table_for_A",
+        "tool_name": "roi_table_for_A",
         "tool_arguments_used": {
-          "A": "ipad",
-          "platforms": null,
-          "group_by": "platform",
-          "min_reviews": 0
+          "A": "iphone",
+          "platforms": [
+            "Shopee"
+          ],
+          "group_by": "seller",
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "output": {
-          "data": [
-            {
-              "group": "Lazada",
-              "roi_mean": 5.818872610776755e-05,
-              "roi_median": 7.720728221429899e-05,
-              "count": 3
-            },
-            {
-              "group": "Shopee",
-              "roi_mean": 0.0002777147832462106,
-              "roi_median": 0.00024155378136408507,
-              "count": 228
-            },
-            {
-              "group": "Tiki",
-              "roi_mean": 1.823315661279174e-05,
-              "roi_median": 1.823315661279174e-05,
-              "count": 2
-            }
-          ],
+          "data": [],
           "meta": {
-            "product_query": "ipad",
-            "detected_category": "Tablets & E-Readers",
-            "confidence": 0.8,
+            "product_query": "iphone",
+            "detected_category": null,
+            "confidence": 0.1,
             "filters": {
               "platforms": [
-                "Lazada",
-                "Shopee",
-                "Tiki",
-                "TikTokShop",
-                "Sendo"
+                "Shopee"
               ],
               "time_window": null,
-              "brand": "Apple",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Tablets & E-Readers; brand_from_hits=Apple; hybrid_search + phrase_filter=True; fe_roi_table_for_A group_by=platform over search subset",
-            "ts_generated": "2025-12-07T08:07:37.986488+00:00",
-            "brand_guess": "Apple"
+            "notes": "resolve_product; no_hits; hybrid_search + phrase_filter=True; no data",
+            "ts_generated": "2025-12-09T21:48:45.847062+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -1112,126 +1224,913 @@
     "eval_config": {
       "metrics": [
         "intent_accuracy",
-        "tool_call_exact_match"
+        "tool_call_exact_match",
+        "slot_accuracy_group_by"
       ]
     }
   },
   {
-    "id": "ex_0015_multi_price_and_rating",
-    "user_query": "Phân tích giúp tôi giá và phân bố rating của iPhone 14 trên Shopee. Tôi muốn biết vừa khoảng giá vừa chất lượng đánh giá.",
+    "id": "brand_compare_three_way",
+    "user_query": "So sánh thị phần của Xiaomi, Oppo và Vivo trong mảng điện thoại trên các sàn.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "Multi-intent: price_summary + rating_distribution on same query."
+      "notes": "brand_share comparing three specific brands - FORWARD LOOKING: expects backend to support multi-brand filtering in future."
     },
     "gold_calls": [
       {
-        "intent_id": "price_summary",
-        "tool_name": "fe_describe_price",
+        "intent_id": "brand_share",
+        "tool_name": "brand_share_chart",
         "tool_arguments": {
-          "A": "iphone 14",
-          "platforms": [
-            "Shopee"
-          ],
+          "A": "điện thoại",
+          "platforms": null,
+          "metric": "revenue_est",
+          "normalize": true,
           "min_reviews": 0,
-          "by_platform": true
+          "use_brand_lock": false,
+          "hint": {
+            "brands": [
+              "Xiaomi",
+              "Oppo",
+              "Vivo"
+            ]
+          }
         },
         "slots": {
-          "A": "iphone 14",
-          "platforms": [
-            "Shopee"
-          ],
+          "A": "điện thoại",
+          "platforms": null,
+          "metric": "revenue_est",
+          "normalize": true,
           "min_reviews": 0,
-          "by_platform": true
+          "brands": [
+            "Xiaomi",
+            "Oppo",
+            "Vivo"
+          ]
         }
-      },
+      }
+    ],
+    "gold_tool_outputs": [
       {
-        "intent_id": "rating_distribution",
-        "tool_name": "fe_rating_distribution",
-        "tool_arguments": {
-          "A": "iphone 14",
-          "platforms": [
-            "Shopee"
+        "intent_id": "brand_share",
+        "tool_name": "brand_share_chart",
+        "tool_arguments_used": {
+          "A": "điện thoại",
+          "platforms": null,
+          "metric": "revenue_est",
+          "normalize": true,
+          "min_reviews": 0,
+          "use_brand_lock": false,
+          "hint": {
+            "brands": [
+              "Xiaomi",
+              "Oppo",
+              "Vivo"
+            ]
+          }
+        },
+        "output": {
+          "data": [
+            {
+              "platform": "Shopee",
+              "brand": "Blue",
+              "value": 29632000.0,
+              "share_pct": 1.1742908011449391
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Hisense",
+              "value": 28400000.0,
+              "share_pct": 1.1254676954817855
+            },
+            {
+              "platform": "Shopee",
+              "brand": "IMOU",
+              "value": 747000000.0,
+              "share_pct": 29.60297072270753
+            },
+            {
+              "platform": "Shopee",
+              "brand": "KINGMAX",
+              "value": 49400000.0,
+              "share_pct": 1.957679723830993
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Kioxia",
+              "value": 25009600.0,
+              "share_pct": 0.9911090449620164
+            },
+            {
+              "platform": "Shopee",
+              "brand": "NAHU",
+              "value": 19074000.0,
+              "share_pct": 0.7558862966063231
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Samsung",
+              "value": 44915200.0,
+              "share_pct": 1.7799509378909684
+            },
+            {
+              "platform": "Shopee",
+              "brand": "Sandisk",
+              "value": 348648699.0,
+              "share_pct": 13.816649570290588
+            },
+            {
+              "platform": "Shopee",
+              "brand": "dahua",
+              "value": 184570000.0,
+              "share_pct": 7.314351146305394
+            },
+            {
+              "platform": "Shopee",
+              "brand": "no brand",
+              "value": 1046745896.0,
+              "share_pct": 41.481644060779466
+            },
+            {
+              "platform": "Tiki",
+              "brand": "AIMO",
+              "value": 5080000.0,
+              "share_pct": 0.2034554091313498
+            },
+            {
+              "platform": "Tiki",
+              "brand": "AMA",
+              "value": 518941000.0,
+              "share_pct": 20.783730998037758
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Baseus",
+              "value": 507000.0,
+              "share_pct": 0.02030549063574692
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Boya",
+              "value": 47124000.0,
+              "share_pct": 1.887329271634986
+            },
+            {
+              "platform": "Tiki",
+              "brand": "CARECAM",
+              "value": 1650000.0,
+              "share_pct": 0.06608295769030063
+            },
+            {
+              "platform": "Tiki",
+              "brand": "EZVIZ",
+              "value": 1134000.0,
+              "share_pct": 0.045417014558061165
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Earldom",
+              "value": 441000.0,
+              "share_pct": 0.017662172328134898
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Fanvil",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Flyingvoice",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "GUTEK",
+              "value": 1800000.0,
+              "share_pct": 0.07209049929850977
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Grandstream",
+              "value": 3860000.0,
+              "share_pct": 0.15459407071791542
+            },
+            {
+              "platform": "Tiki",
+              "brand": "HXSJ",
+              "value": 24450000.0,
+              "share_pct": 0.9792292821380912
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Hammer",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Hoco",
+              "value": 562000.0,
+              "share_pct": 0.022508255892090274
+            },
+            {
+              "platform": "Tiki",
+              "brand": "KTEL",
+              "value": 41400000.0,
+              "share_pct": 1.658081483865725
+            },
+            {
+              "platform": "Tiki",
+              "brand": "LDK.ai",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Langston",
+              "value": 165000.0,
+              "share_pct": 0.006608295769030064
+            },
+            {
+              "platform": "Tiki",
+              "brand": "LuckyJQR",
+              "value": 5597760.0,
+              "share_pct": 0.2241918407517923
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Masstel",
+              "value": 1198000.0,
+              "share_pct": 0.04798023231089707
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Panasonic",
+              "value": 1438462000.0,
+              "share_pct": 57.61080211218499
+            },
+            {
+              "platform": "Tiki",
+              "brand": "ROGTZ",
+              "value": 1920530.0,
+              "share_pct": 0.07691775923209276
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Remax",
+              "value": 375998.0,
+              "share_pct": 0.015058824197356156
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Rihatech",
+              "value": 20609400.0,
+              "share_pct": 0.8254121868015042
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Rode",
+              "value": 70700000.0,
+              "share_pct": 2.831554611335912
+            },
+            {
+              "platform": "Tiki",
+              "brand": "SOAIY",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Saramonic",
+              "value": 35480000.0,
+              "share_pct": 1.420983841728404
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Shidu",
+              "value": 764000.0,
+              "share_pct": 0.030598411924478597
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Tecno",
+              "value": 75180000.0,
+              "share_pct": 3.0109798540344253
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Uniden",
+              "value": 12750000.0,
+              "share_pct": 0.5106410366977776
+            },
+            {
+              "platform": "Tiki",
+              "brand": "VIETHAS",
+              "value": 3040000.0,
+              "share_pct": 0.12175284325970541
+            },
+            {
+              "platform": "Tiki",
+              "brand": "VR Shinecon",
+              "value": 5361120.0,
+              "share_pct": 0.21471434311068155
+            },
+            {
+              "platform": "Tiki",
+              "brand": "VSP",
+              "value": 5580000.0,
+              "share_pct": 0.22348054782538032
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Vivo",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "WIWU",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Xiaomi",
+              "value": 86772000.0,
+              "share_pct": 3.475242669516828
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Xprinter",
+              "value": 81535000.0,
+              "share_pct": 3.2654993668355523
+            },
+            {
+              "platform": "Tiki",
+              "brand": "YHDAA",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Yealink",
+              "value": 0.0,
+              "share_pct": 0.0
+            },
+            {
+              "platform": "Tiki",
+              "brand": "Zealot ",
+              "value": 911800.0,
+              "share_pct": 0.03651784292243401
+            },
+            {
+              "platform": "Tiki",
+              "brand": "ratoff-ars",
+              "value": 3510000.0,
+              "share_pct": 0.14057647363209408
+            }
           ],
-          "bins": 20,
-          "group_by_brand": true,
-          "min_reviews": 0
+          "meta": {
+            "product_query": "điện thoại",
+            "detected_category": null,
+            "confidence": 0.2,
+            "filters": {
+              "platforms": [
+                "Lazada",
+                "Shopee",
+                "Tiki",
+                "TikTokShop",
+                "Sendo"
+              ],
+              "time_window": null,
+              "brand": null,
+              "sku": null,
+              "min_reviews": 0
+            },
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_brand_share_chart metric=revenue_est over search subset",
+            "ts_generated": "2025-12-09T21:48:46.037391+00:00",
+            "brand_guess": null
+          }
+        }
+      }
+    ],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_A",
+        "slot_accuracy_brands",
+        "multi_brand_extraction"
+      ]
+    }
+  },
+  {
+    "id": "sold_distribution_single_platform",
+    "user_query": "Phân bố số lượng bán của bàn phím cơ trên TikTok Shop theo mặc định.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "sold_distribution on single platform with default bins."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "sold_distribution",
+        "tool_name": "sold_distribution",
+        "tool_arguments": {
+          "A": "bàn phím cơ",
+          "platforms": [
+            "TikTok Shop"
+          ],
+          "bins": [
+            0,
+            10,
+            50,
+            100,
+            500,
+            1000,
+            5000,
+            10000
+          ],
+          "min_reviews": 0,
+          "use_brand_lock": true
         },
         "slots": {
-          "A": "iphone 14",
+          "A": "bàn phím cơ",
           "platforms": [
-            "Shopee"
+            "TikTok Shop"
           ],
-          "bins": 20,
-          "group_by_brand": true,
+          "bins": [
+            0,
+            10,
+            50,
+            100,
+            500,
+            1000,
+            5000,
+            10000
+          ],
           "min_reviews": 0
         }
       }
     ],
     "gold_tool_outputs": [
       {
-        "intent_id": "price_summary",
-        "tool_name": "fe_describe_price",
+        "intent_id": "sold_distribution",
+        "tool_name": "sold_distribution",
         "tool_arguments_used": {
-          "A": "iphone 14",
+          "A": "bàn phím cơ",
+          "platforms": [
+            "TikTok Shop"
+          ],
+          "bins": [
+            0,
+            10,
+            50,
+            100,
+            500,
+            1000,
+            5000,
+            10000
+          ],
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "output": {
+          "data": [
+            {
+              "platform": "TikTok Shop",
+              "bin_left": 0.0,
+              "bin_right": 10.0,
+              "count": 10,
+              "pct": 0.5263157894736842
+            },
+            {
+              "platform": "TikTok Shop",
+              "bin_left": 10.0,
+              "bin_right": 50.0,
+              "count": 4,
+              "pct": 0.21052631578947367
+            },
+            {
+              "platform": "TikTok Shop",
+              "bin_left": 50.0,
+              "bin_right": 100.0,
+              "count": 3,
+              "pct": 0.15789473684210525
+            },
+            {
+              "platform": "TikTok Shop",
+              "bin_left": 500.0,
+              "bin_right": 1000.0,
+              "count": 1,
+              "pct": 0.05263157894736842
+            },
+            {
+              "platform": "TikTok Shop",
+              "bin_left": 1000.0,
+              "bin_right": 5000.0,
+              "count": 1,
+              "pct": 0.05263157894736842
+            }
+          ],
+          "meta": {
+            "product_query": "bàn phím cơ",
+            "detected_category": null,
+            "confidence": 0.2,
+            "filters": {
+              "platforms": [
+                "TikTok Shop"
+              ],
+              "time_window": null,
+              "brand": null,
+              "sku": null,
+              "min_reviews": 0
+            },
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_sold_distribution over search subset",
+            "ts_generated": "2025-12-09T21:48:46.203542+00:00",
+            "brand_guess": null,
+            "bin_edges": [
+              0.0,
+              10.0,
+              50.0,
+              100.0,
+              500.0,
+              1000.0,
+              5000.0,
+              10000.0
+            ]
+          }
+        }
+      }
+    ],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_platforms"
+      ]
+    }
+  },
+  {
+    "id": "category_split_by_category",
+    "user_query": "Các mẫu tai nghe phân bố vào những danh mục con nào trên tất cả các sàn?",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "category_split using default categories field."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "category_split",
+        "tool_name": "category_count_plot",
+        "tool_arguments": {
+          "A": "tai nghe",
+          "platforms": null,
+          "sublevel_field": "categories",
+          "top_k": null,
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "tai nghe",
+          "platforms": null,
+          "sublevel_field": "categories",
+          "top_k": null,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [
+      {
+        "intent_id": "category_split",
+        "tool_name": "category_count_plot",
+        "tool_arguments_used": {
+          "A": "tai nghe",
+          "platforms": null,
+          "sublevel_field": "categories",
+          "top_k": null,
+          "min_reviews": 0,
+          "use_brand_lock": true
+        },
+        "output": {
+          "data": [
+            {
+              "product_count": "Wired In-Ear Headphones",
+              "count": 28
+            },
+            {
+              "product_count": "Bluetooth In-Ear Headphones",
+              "count": 20
+            },
+            {
+              "product_count": "Bluetooth Over-Ear Headphones",
+              "count": 19
+            },
+            {
+              "product_count": "Headphones",
+              "count": 13
+            },
+            {
+              "product_count": "True Wireless Earbuds",
+              "count": 13
+            },
+            {
+              "product_count": "Wired Over-Ear Headphones",
+              "count": 13
+            },
+            {
+              "product_count": "Bluetooth On-Ear Headphones",
+              "count": 11
+            },
+            {
+              "product_count": "Bluetooth Headsets",
+              "count": 4
+            },
+            {
+              "product_count": "Wired On-Ear Headphones",
+              "count": 2
+            },
+            {
+              "product_count": "Bluetooth Speakers",
+              "count": 2
+            },
+            {
+              "product_count": "Smart Glasses",
+              "count": 1
+            },
+            {
+              "product_count": "Smartphones",
+              "count": 1
+            },
+            {
+              "product_count": "Speakers",
+              "count": 1
+            },
+            {
+              "product_count": "Virtual Reality Devices",
+              "count": 1
+            },
+            {
+              "product_count": "Accessories",
+              "count": 1
+            },
+            {
+              "product_count": "Mobile Microphones",
+              "count": 1
+            }
+          ],
+          "meta": {
+            "product_query": "tai nghe",
+            "detected_category": null,
+            "confidence": 0.2,
+            "filters": {
+              "platforms": [
+                "Lazada",
+                "Shopee",
+                "Tiki",
+                "TikTokShop",
+                "Sendo"
+              ],
+              "time_window": null,
+              "brand": null,
+              "sku": null,
+              "min_reviews": 0
+            },
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_category_count_plot over search subset",
+            "ts_generated": "2025-12-09T21:48:46.412285+00:00",
+            "brand_guess": null
+          }
+        }
+      }
+    ],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "tool_call_exact_match",
+        "slot_f1_product_A"
+      ]
+    }
+  },
+  {
+    "id": "price_summary_with_min_reviews",
+    "user_query": "Khoảng giá của loa bluetooth có ít nhất 20 đánh giá trên các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "price_summary with min_reviews filter."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments": {
+          "A": "loa bluetooth",
+          "platforms": null,
+          "min_reviews": 20,
+          "by_platform": false,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "loa bluetooth",
+          "platforms": null,
+          "min_reviews": 20,
+          "by_platform": false
+        }
+      }
+    ],
+    "gold_tool_outputs": [
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments_used": {
+          "A": "loa bluetooth",
+          "platforms": null,
+          "min_reviews": 20,
+          "by_platform": false,
+          "use_brand_lock": true
+        },
+        "output": {
+          "data": [
+            {
+              "min_price": 136000.0,
+              "q10": 150506.0,
+              "median_price": 208530.0,
+              "mean_price": 208530.0,
+              "q90": 266554.0,
+              "max_price": 281060.0,
+              "std_price": 102572.90967892058,
+              "count": 2
+            }
+          ],
+          "meta": {
+            "product_query": "loa bluetooth",
+            "detected_category": null,
+            "confidence": 0.2,
+            "filters": {
+              "platforms": [
+                "Lazada",
+                "Shopee",
+                "Tiki",
+                "TikTokShop",
+                "Sendo"
+              ],
+              "time_window": null,
+              "brand": null,
+              "sku": null,
+              "min_reviews": 20
+            },
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_describe_price over search subset",
+            "ts_generated": "2025-12-09T21:48:46.472182+00:00",
+            "brand_guess": null
+          }
+        }
+      }
+    ],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_accuracy_min_reviews"
+      ]
+    }
+  },
+  {
+    "id": "multi_product_comparison",
+    "user_query": "So sánh giá của iPad Air và iPad Pro trên Shopee.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "MULTI-INTENT: Two price_summary calls for iPad Air vs iPad Pro comparison."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments": {
+          "A": "ipad air",
           "platforms": [
             "Shopee"
           ],
           "min_reviews": 0,
-          "by_platform": true
+          "by_platform": false,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "ipad air",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 0,
+          "by_platform": false
+        }
+      },
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments": {
+          "A": "ipad pro",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 0,
+          "by_platform": false,
+          "use_brand_lock": true
+        },
+        "slots": {
+          "A": "ipad pro",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 0,
+          "by_platform": false
+        }
+      }
+    ],
+    "gold_tool_outputs": [
+      {
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
+        "tool_arguments_used": {
+          "A": "ipad air",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 0,
+          "by_platform": false,
+          "use_brand_lock": true
         },
         "output": {
-          "data": [],
+          "data": [
+            {
+              "min_price": 116334.0,
+              "q10": 9936478.4,
+              "median_price": 17825365.0,
+              "mean_price": 18720383.953488372,
+              "q90": 29919697.0,
+              "max_price": 31847187.0,
+              "std_price": 8575016.57168819,
+              "count": 43
+            }
+          ],
           "meta": {
-            "product_query": "iphone 14",
-            "detected_category": "Phones & Accessories",
-            "confidence": 0.8,
+            "product_query": "ipad air",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
                 "Shopee"
               ],
               "time_window": null,
-              "brand": "Xiaomi",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Phones & Accessories; brand_from_hits=Xiaomi; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:38.110840+00:00",
-            "brand_guess": "Xiaomi"
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_describe_price over search subset",
+            "ts_generated": "2025-12-09T21:48:46.538382+00:00",
+            "brand_guess": null
           }
         }
       },
       {
-        "intent_id": "rating_distribution",
-        "tool_name": "fe_rating_distribution",
+        "intent_id": "price_summary",
+        "tool_name": "describe_price",
         "tool_arguments_used": {
-          "A": "iphone 14",
+          "A": "ipad pro",
           "platforms": [
             "Shopee"
           ],
-          "bins": 20,
-          "group_by_brand": true,
-          "min_reviews": 0
+          "min_reviews": 0,
+          "by_platform": false,
+          "use_brand_lock": true
         },
         "output": {
-          "data": [],
+          "data": [
+            {
+              "min_price": 172113.0,
+              "q10": 10192436.6,
+              "median_price": 18111007.0,
+              "mean_price": 18437210.60952381,
+              "q90": 28438423.6,
+              "max_price": 31672210.0,
+              "std_price": 7237920.04834671,
+              "count": 105
+            }
+          ],
           "meta": {
-            "product_query": "iphone 14",
-            "detected_category": "Phones & Accessories",
-            "confidence": 0.8,
+            "product_query": "ipad pro",
+            "detected_category": null,
+            "confidence": 0.2,
             "filters": {
               "platforms": [
                 "Shopee"
               ],
               "time_window": null,
-              "brand": "Xiaomi",
+              "brand": null,
               "sku": null,
               "min_reviews": 0
             },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Phones & Accessories; brand_from_hits=Xiaomi; hybrid_search + phrase_filter=True; no rating data",
-            "ts_generated": "2025-12-07T08:07:38.189799+00:00",
-            "brand_guess": "Xiaomi",
-            "bin_edges": []
+            "notes": "resolve_product; hybrid_search_hits; hybrid_search + phrase_filter=True; fe_describe_price over search subset",
+            "ts_generated": "2025-12-09T21:48:46.621716+00:00",
+            "brand_guess": null
           }
         }
       }
@@ -1240,132 +2139,244 @@
       "metrics": [
         "multi_intent_detection",
         "tool_sequence_accuracy",
+        "slot_f1_product_A",
+        "slot_f1_platforms"
+      ]
+    }
+  },
+  {
+    "id": "product_analysis_basic",
+    "user_query": "Phân tích sản phẩm iPhone 15 trên tất cả các sàn.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "Basic product_analysis query for comprehensive product evaluation."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "product_analysis",
+        "tool_name": "get_product_analysis",
+        "tool_arguments": {
+          "product_name": "iphone 15",
+          "platforms": null,
+          "min_reviews": 0
+        },
+        "slots": {
+          "product_name": "iphone 15",
+          "platforms": null,
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms"
+      ]
+    }
+  },
+  {
+    "id": "advanced_market_analysis_platform",
+    "user_query": "Phân tích thị trường laptop gaming trên Shopee và Lazada.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "Advanced market analysis with ROI grouped by platform."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "advanced_market_analysis",
+        "tool_name": "get_advanced_market_analysis",
+        "tool_arguments": {
+          "product_name": "laptop gaming",
+          "platforms": [
+            "Shopee",
+            "Lazada"
+          ],
+          "min_reviews": 0,
+          "group_roi_by": "platform",
+          "min_products_div": 5
+        },
+        "slots": {
+          "product_name": "laptop gaming",
+          "platforms": [
+            "Shopee",
+            "Lazada"
+          ],
+          "min_reviews": 0,
+          "group_roi_by": "platform",
+          "min_products_div": 5
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
         "slot_f1_platforms",
-        "slot_f1_product_A"
+        "slot_accuracy_group_roi_by"
       ]
     }
   },
   {
-    "id": "ex_0016_multi_search_and_top_sellers",
-    "user_query": "Trước hết hãy liệt kê các mẫu robot hút bụi đang hot trên tất cả các sàn, sau đó cho tôi top seller đang bán nhóm sản phẩm này.",
+    "id": "advanced_market_analysis_brand",
+    "user_query": "Phân tích thị trường tai nghe theo thương hiệu trên tất cả các sàn.",
     "language": "vi",
     "context": {
       "intent_taxonomy_version": "v1.0",
-      "notes": "Multi-intent: search_products + top_sellers."
+      "notes": "Advanced market analysis with ROI grouped by brand."
     },
     "gold_calls": [
       {
-        "intent_id": "search_products",
-        "tool_name": "search_products_hybrid",
+        "intent_id": "advanced_market_analysis",
+        "tool_name": "get_advanced_market_analysis",
         "tool_arguments": {
-          "A": "robot hút bụi",
+          "product_name": "tai nghe",
           "platforms": null,
           "min_reviews": 0,
-          "max_rows": 50,
-          "enforce_phrase": true
+          "group_roi_by": "brand",
+          "min_products_div": 5
         },
         "slots": {
-          "A": "robot hút bụi",
+          "product_name": "tai nghe",
           "platforms": null,
-          "min_reviews": 0
-        }
-      },
-      {
-        "intent_id": "top_sellers",
-        "tool_name": "fe_top_sellers",
-        "tool_arguments": {
-          "A": "robot hút bụi",
-          "platforms": null,
-          "by": "sold",
-          "top_k": 20,
-          "min_reviews": 0
-        },
-        "slots": {
-          "A": "robot hút bụi",
-          "platforms": null,
-          "by": "sold",
-          "top_k": 20,
-          "min_reviews": 0
+          "min_reviews": 0,
+          "group_roi_by": "brand",
+          "min_products_div": 5
         }
       }
     ],
-    "gold_tool_outputs": [
-      {
-        "intent_id": "search_products",
-        "tool_name": "search_products_hybrid",
-        "tool_arguments_used": {
-          "A": "robot hút bụi",
-          "platforms": null,
-          "min_reviews": 0,
-          "max_rows": 50,
-          "enforce_phrase": true
-        },
-        "output": {
-          "data": [],
-          "meta": {
-            "product_query": "robot hút bụi",
-            "detected_category": "Printers & Scanners",
-            "confidence": 0.8,
-            "filters": {
-              "platforms": [
-                "Lazada",
-                "Shopee",
-                "Tiki",
-                "TikTokShop",
-                "Sendo"
-              ],
-              "time_window": null,
-              "brand": "HA",
-              "sku": null,
-              "min_reviews": 0
-            },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Printers & Scanners; brand_from_hits=HA; hybrid_search + phrase_filter=True",
-            "ts_generated": "2025-12-07T08:07:38.409680+00:00",
-            "brand_guess": "HA"
-          }
-        }
-      },
-      {
-        "intent_id": "top_sellers",
-        "tool_name": "fe_top_sellers",
-        "tool_arguments_used": {
-          "A": "robot hút bụi",
-          "platforms": null,
-          "by": "sold",
-          "top_k": 20,
-          "min_reviews": 0
-        },
-        "output": {
-          "data": [],
-          "meta": {
-            "product_query": "robot hút bụi",
-            "detected_category": "Audio Devices",
-            "confidence": 0.8,
-            "filters": {
-              "platforms": [
-                "Lazada",
-                "Shopee",
-                "Tiki",
-                "TikTokShop",
-                "Sendo"
-              ],
-              "time_window": null,
-              "brand": "Hikvision",
-              "sku": null,
-              "min_reviews": 0
-            },
-            "notes": "hybrid_search-driven; hybrid_search_hits; category_from_hits=Audio Devices; brand_from_hits=Hikvision; hybrid_search + phrase_filter=True; no data",
-            "ts_generated": "2025-12-07T08:07:38.609486+00:00",
-            "brand_guess": "Hikvision"
-          }
-        }
-      }
-    ],
+    "gold_tool_outputs": [],
     "eval_config": {
       "metrics": [
-        "multi_intent_detection",
-        "tool_sequence_accuracy",
-        "slot_f1_product_A"
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_accuracy_group_roi_by"
+      ]
+    }
+  },
+  {
+    "id": "advanced_market_analysis_seller",
+    "user_query": "Phân tích thị trường máy ảnh theo người bán trên Shopee với shop có ít nhất 15 sản phẩm.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "Advanced market analysis with ROI grouped by seller and custom min_products_div threshold."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "advanced_market_analysis",
+        "tool_name": "get_advanced_market_analysis",
+        "tool_arguments": {
+          "product_name": "máy ảnh",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 0,
+          "group_roi_by": "seller",
+          "min_products_div": 15
+        },
+        "slots": {
+          "product_name": "máy ảnh",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 0,
+          "group_roi_by": "seller",
+          "min_products_div": 15
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms",
+        "slot_accuracy_group_roi_by",
+        "slot_accuracy_min_products_div"
+      ]
+    }
+  },
+  {
+    "id": "product_analysis_with_min_reviews",
+    "user_query": "Phân tích máy tính bảng Samsung trên Shopee với ít nhất 50 đánh giá.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "product_analysis with specific platform and min_reviews threshold."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "product_analysis",
+        "tool_name": "get_product_analysis",
+        "tool_arguments": {
+          "product_name": "máy tính bảng samsung",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 50
+        },
+        "slots": {
+          "product_name": "máy tính bảng samsung",
+          "platforms": [
+            "Shopee"
+          ],
+          "min_reviews": 50
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms",
+        "slot_accuracy_min_reviews"
+      ]
+    }
+  },
+  {
+    "id": "product_analysis_multi_platform",
+    "user_query": "Phân tích chi tiết loa bluetooth trên Shopee, Lazada và Tiki.",
+    "language": "vi",
+    "context": {
+      "intent_taxonomy_version": "v1.0",
+      "notes": "product_analysis with multiple platforms specified."
+    },
+    "gold_calls": [
+      {
+        "intent_id": "product_analysis",
+        "tool_name": "get_product_analysis",
+        "tool_arguments": {
+          "product_name": "loa bluetooth",
+          "platforms": [
+            "Shopee",
+            "Lazada",
+            "Tiki"
+          ],
+          "min_reviews": 0
+        },
+        "slots": {
+          "product_name": "loa bluetooth",
+          "platforms": [
+            "Shopee",
+            "Lazada",
+            "Tiki"
+          ],
+          "min_reviews": 0
+        }
+      }
+    ],
+    "gold_tool_outputs": [],
+    "eval_config": {
+      "metrics": [
+        "intent_accuracy",
+        "slot_f1_product_name",
+        "slot_f1_platforms"
       ]
     }
   }
