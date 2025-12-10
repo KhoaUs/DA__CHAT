@@ -40,9 +40,10 @@ def normalize_name(name: str) -> str:
 def phrase_check(records, query: str):
     q_norm = normalize_name(query)
     for r in records:
-        norm_name = normalize_name(str(r.get("product_name", "")))
+        pname = r.get("product_name", "")
+        norm_name = normalize_name(str(pname))
         if q_norm not in norm_name:
-            print(f"✗ Phrase mismatch → {r.get('product_name')}")
+            print(f"✗ Phrase mismatch → {pname}")
             return
     print(f"✓ Phrase check passed → '{q_norm}'")
 
@@ -51,7 +52,8 @@ def preview(records, k=5):
     for i, r in enumerate(records[:k], start=1):
         print(
             f"[{i:02d}] {r.get('platform','')} | {r.get('brand','')} | "
-            f"{r.get('product_name','')} | price={r.get('price')} | sold={r.get('sold')} | rating={r.get('rating')}"
+            f"{r.get('product_name','')} | "
+            f"price={r.get('price')} | sold={r.get('sold')} | rating={r.get('rating')}"
         )
 
 
@@ -69,7 +71,9 @@ def load_data():
     df["price"] = pd.to_numeric(df["price"], errors="coerce").fillna(0)
     df["sold"] = pd.to_numeric(df["sold"], errors="coerce").fillna(0)
     df["rating"] = pd.to_numeric(df["rating"], errors="coerce")
-    df["review_count"] = pd.to_numeric(df["review_count"], errors="coerce").fillna(0).astype(int)
+    df["review_count"] = (
+        pd.to_numeric(df["review_count"], errors="coerce").fillna(0).astype(int)
+    )
 
     df[df.columns] = df[df.columns].fillna("")
 
@@ -106,8 +110,6 @@ def run_full_fe_tests(df, catalog_categories, brand_list, query, HINT, case_name
     preview(out["data"])
     phrase_check(out["data"], query)
 
-    records = out["data"]
-
     # =============== FE TEST TABLE ===============
     FE_FUNCTIONS = [
         ("fe_describe_price", fe_describe_price, {"by_platform": True}),
@@ -122,7 +124,6 @@ def run_full_fe_tests(df, catalog_categories, brand_list, query, HINT, case_name
         ("fe_roi_table_for_A", fe_roi_table_for_A, {"group_by": "platform"}),
     ]
 
-    # Running all FE functions
     for title, func, kwargs in FE_FUNCTIONS:
         print_section(f"{case_name} — {title}")
         out = func(df=df, A=query, hint=HINT, **kwargs)
@@ -153,7 +154,7 @@ def main():
     # CASE 1 — NO BRAND/CATEGORY
     # =====================================================
     HINT1 = {
-        "platforms": ["Tiki", "TikTok Shop"]
+        "platforms": ["Tiki", "TikTokShop"]   # FIXED NAME
     }
 
     run_full_fe_tests(
@@ -169,7 +170,7 @@ def main():
     # CASE 2 — WITH brand + category
     # =====================================================
     HINT2 = {
-        "platforms": ["Tiki", "TikTok Shop"],
+        "platforms": ["Tiki", "TikTokShop"],
         "brand": "Apple",
         "category": "Phones & Accessories"
     }

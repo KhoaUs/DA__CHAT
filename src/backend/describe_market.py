@@ -69,10 +69,40 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+from unidecode import unidecode
+import re
+
+import re
+import unicodedata
+from unidecode import unidecode
+
 def _normalize_text(s: str) -> str:
+    """
+    Chuẩn hoá tiếng Việt:
+    - NFKC normalization (ổn định Unicode)
+    - Lowercase (kể cả Đ → đ)
+    - Bỏ dấu tiếng Việt bằng unidecode
+    - Giữ lại a-z và số
+    """
+    if not isinstance(s, str):
+        return ""
+
+    # Chuẩn hóa Unicode (rất quan trọng!)
+    s = unicodedata.normalize("NFKC", s)
+
+    # Lowercase tiếng Việt đầy đủ
+    # Ví dụ: Đ → đ
     s = s.lower()
+
+    # Bỏ dấu tiếng Việt
+    s = unidecode(s)        # đèn ngủ → den ngu
+
+    # Giữ chữ + số
     s = re.sub(r"[^a-z0-9]+", " ", s)
+
     return s.strip()
+
+
 
 
 def _tokenize(s: str) -> List[str]:
@@ -131,7 +161,12 @@ def hybrid_search(
     alpha: float = 0.5,
     beta: float = 0.5,
 ) -> pd.DataFrame:
-    name_col = _safe_column(df, "name")
+    # Ưu tiên dùng tên đã normalize
+    if "product_name_norm" in df.columns:
+        name_col = "product_name_norm"
+    else:
+        name_col = _safe_column(df, "name")
+
     cat_col = _safe_column(df, "category")
     cat_hier_col = _safe_column(df, "categories")
     brand_col = _safe_column(df, "brand")
@@ -580,13 +615,19 @@ def _search_df_core(
         beta=0.5,
     )
 
-    name_col = _safe_column(df_hits, "name")
+    if "product_name_norm" in df_hits.columns:
+        name_col = "product_name_norm"
+    else:
+        name_col = _safe_column(df_hits, "name")
+
 
     if enforce_phrase and A:
         q_norm = _normalize_text(A)
 
         def has_phrase(txt: str) -> bool:
-            return q_norm in _normalize_text(str(txt))
+            # txt lúc này đã là normalized → không normalize lại nữa
+            return q_norm in str(txt)
+
 
         df_hits = df_hits[df_hits[name_col].apply(has_phrase)]
 

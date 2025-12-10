@@ -1,0 +1,159 @@
+{
+  "cases": [
+    {
+      "id": "hs_simple_001",
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "gold_skus": [
+        "8535728010660"
+      ],
+      "pred_skus": [
+        "8535728010660",
+        "4922950057674"
+      ],
+      "gold_count": 1,
+      "pred_count": 2,
+      "tp": 1,
+      "fp": 1,
+      "fn": 0
+    },
+    {
+      "id": "hs_phrase_004",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "gold_skus": [
+        "7371094460890",
+        "4128740370011",
+        "4937729972649"
+      ],
+      "pred_skus": [
+        "7371094460890",
+        "4128740370011",
+        "4937729972649"
+      ],
+      "gold_count": 3,
+      "pred_count": 3,
+      "tp": 3,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "id": "hs_phrase_006",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "gold_skus": [
+        "3321414603615"
+      ],
+      "pred_skus": [
+        "3321414603615"
+      ],
+      "gold_count": 1,
+      "pred_count": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "id": "hs_descriptive_007",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "gold_skus": [
+        "5055607039859",
+        "8749062026934",
+        "5551620473380",
+        "7807953648587"
+      ],
+      "pred_skus": [
+        "5055607039859",
+        "8749062026934",
+        "5551620473380",
+        "7807953648587"
+      ],
+      "gold_count": 4,
+      "pred_count": 4,
+      "tp": 4,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "id": "hs_platform_013",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "gold_skus": [
+        "5479977177283"
+      ],
+      "pred_skus": [
+        "5479977177283"
+      ],
+      "gold_count": 1,
+      "pred_count": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "id": "hs_min_reviews_014",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "gold_skus": [
+        "9458952170667"
+      ],
+      "pred_skus": [
+        "9458952170667"
+      ],
+      "gold_count": 1,
+      "pred_count": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "id": "hs_brand_lock_015",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "gold_skus": [
+        "5479977177283"
+      ],
+      "pred_skus": [
+        "5479977177283"
+      ],
+      "gold_count": 1,
+      "pred_count": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    },
+    {
+      "id": "hs_category_lock_017",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "gold_skus": [
+        "5479977177283"
+      ],
+      "pred_skus": [
+        "5479977177283"
+      ],
+      "gold_count": 1,
+      "pred_count": 1,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0
+    }
+  ],
+  "overall": {
+    "tp": 13,
+    "fp": 1,
+    "fn": 0,
+    "precision": 0.9285714285714286,
+    "recall": 1.0,
+    "f1": 0.962962962962963
+  }
+}

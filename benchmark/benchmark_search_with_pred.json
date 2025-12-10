@@ -1,0 +1,143 @@
+[
+  {
+    "id": "hs_simple_001",
+    "query": "Iphone 16",
+    "filters": {
+      "platforms": null,
+      "brand": null,
+      "category": null,
+      "min_reviews": 0
+    },
+    "gold_skus": [
+      "8535728010660"
+    ],
+    "pred_result": [
+      "8535728010660",
+      "4922950057674" 
+    ]
+  },
+  {
+    "id": "hs_phrase_004",
+    "query": "SoundMax BT700",
+    "filters": {
+      "platforms": null,
+      "brand": null,
+      "category": null,
+      "min_reviews": 0
+    },
+    "gold_skus": [
+      "7371094460890",
+      "4937729972649",
+      "4128740370011"
+    ],
+    "pred_result": [
+      "7371094460890",
+      "4937729972649",
+      "4128740370011"
+    ]
+  },
+  {
+    "id": "hs_phrase_006",
+    "query": "Mic Hỗ Trợ Đàm Thoại",
+    "filters": {
+      "platforms": null,
+      "brand": "Earldom",
+      "category": "Audio Devices",
+      "min_reviews": 0
+    },
+    "gold_skus": [
+      "3321414603615"
+    ],
+    "pred_result": [
+      "3321414603615"
+    ]
+  },
+  {
+    "id": "hs_descriptive_007",
+    "query": "tai nghe bluetooth chụp tai",
+    "filters": {
+      "platforms": null,
+      "brand": null,
+      "category": "Audio Devices",
+      "min_reviews": 0
+    },
+    "gold_skus": [
+      "7807953648587",
+      "5055607039859",
+      "5551620473380",
+      "8749062026934"
+    ],
+    "pred_result": [
+      "5055607039859",
+      "5551620473380",
+      "7807953648587",
+      "8749062026934"
+    ]
+  },
+  {
+    "id": "hs_platform_013",
+    "query": "iphone 13",
+    "filters": {
+      "platforms": [
+        "Tiki"
+      ],
+      "brand": null,
+      "category": null,
+      "min_reviews": 0
+    },
+    "gold_skus": [
+      "5479977177283"
+    ],
+    "pred_result": [
+      "5479977177283"
+    ]
+  },
+  {
+    "id": "hs_min_reviews_014",
+    "query": "Redmi Buds 4 Lite",
+    "filters": {
+      "platforms": null,
+      "brand": null,
+      "category": "Audio Devices",
+      "min_reviews": 5
+    },
+    "gold_skus": [
+      "9458952170667"
+    ],
+    "pred_result": [
+      "9458952170667"
+    ]
+  },
+  {
+    "id": "hs_brand_lock_015",
+    "query": "iphone 13",
+    "filters": {
+      "platforms": null,
+      "brand": "Apple",
+      "category": null,
+      "min_reviews": 0
+    },
+    "gold_skus": [
+      "5479977177283"
+    ],
+    "pred_result": [
+      "5479977177283"
+    ]
+  },
+  {
+    "id": "hs_category_lock_017",
+    "query": "iphone 13",
+    "filters": {
+      "platforms": null,
+      "brand": null,
+      "category": "Phones & Accessories",
+      "min_reviews": 0
+    },
+    "gold_skus": [
+      "5479977177283"
+    ],
+    "pred_result": [
+      "5479977177283"
+    ]
+  }
+]
