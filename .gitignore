@@ -34,3 +34,6 @@ build/
 
 # File test
 test_ui.py
+
+# Crawl 
+crawl
